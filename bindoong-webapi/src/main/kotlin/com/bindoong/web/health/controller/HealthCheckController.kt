@@ -1,5 +1,6 @@
 package com.bindoong.web.health.controller
 
+import com.bindoong.web.security.UserSessionUtils
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -13,9 +14,9 @@ class HealthCheckController(
     @GetMapping
     suspend fun healthCheck() = ResponseEntity.ok().build<Nothing>()
 
-    @PreAuthorize("hasRole('BASIC')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/auth")
-    suspend fun healthAuthCheck() = ResponseEntity.ok().build<Nothing>()
+    suspend fun healthAuthCheck() = ResponseEntity.ok(UserSessionUtils.getCurrentUserId())
 
     companion object {
         const val BASE_PATH = "/health"

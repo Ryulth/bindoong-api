@@ -1,5 +1,6 @@
 package com.bindoong.web.error
 
+import mu.KLogging
 import org.springframework.boot.web.error.ErrorAttributeOptions
 import org.springframework.boot.web.reactive.error.DefaultErrorAttributes
 import org.springframework.http.HttpStatus
@@ -21,10 +22,15 @@ class WebErrorAttributes : DefaultErrorAttributes() {
         }
 
     private fun getException(request: ServerRequest): Throwable = super.getError(request)
+        .also {
+            logger.error(it) { "error path : ${request.path()}" }
+        }
 
     private fun getStatusCode(exception: Throwable): Int = when (exception::class) {
         org.springframework.security.access.AccessDeniedException::class ->
             HttpStatus.UNAUTHORIZED.value()
         else -> HttpStatus.INTERNAL_SERVER_ERROR.value()
     }
+
+    companion object : KLogging()
 }
