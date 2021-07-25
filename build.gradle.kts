@@ -2,12 +2,12 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 
 plugins {
     base
-    id("org.jetbrains.kotlin.jvm") version Kotlin.version
-    id("org.jetbrains.kotlin.kapt") version Kotlin.version
-    id("org.springframework.boot") version Versions.springBoot
-    id("org.jetbrains.kotlin.plugin.spring") version Kotlin.version
-    id("org.jetbrains.kotlin.plugin.jpa") version Kotlin.version
-    id("io.spring.dependency-management") version Versions.springDependencyManagement
+    id(Plugins.jvm) version Versions.kotlin
+    id(Plugins.kapt) version Versions.kotlin
+    id(Plugins.spring) version Versions.kotlin
+    id(Plugins.jpa) version Versions.kotlin
+    id(Plugins.springBoot) version Versions.springBoot
+    id(Plugins.springDependencyManagement) version Versions.springDependencyManagement
 }
 
 allprojects {
@@ -35,39 +35,38 @@ subprojects {
         plugin<JavaLibraryPlugin>()
         plugin<KotlinPlatformJvmPlugin>()
 
-        plugin("kotlin")
-        plugin("kotlin-kapt")
-        plugin("org.springframework.boot")
-        plugin("io.spring.dependency-management")
-        plugin("org.jetbrains.kotlin.plugin.spring")
-        plugin("org.jetbrains.kotlin.plugin.jpa")
-        plugin("io.spring.dependency-management")
+        plugin(Plugins.jvm)
+        plugin(Plugins.kapt)
+        plugin(Plugins.spring)
+        plugin(Plugins.jpa)
+        plugin(Plugins.springBoot)
+        plugin(Plugins.springDependencyManagement)
     }
 
     dependencies {
-        implementation("io.github.microutils:kotlin-logging:2.0.6")
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-        implementation("org.jetbrains.kotlin:kotlin-reflect")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.4.3")
+        implementation(Libs.Kotlin.stdlibJdk8)
+        implementation(Libs.Kotlin.reflect)
+        implementation(Libs.Kotlin.coroutinesCore)
+        implementation(Libs.Kotlin.coroutinesReactor)
+        implementation(Libs.Kotlin.logging)
     }
     tasks {
         compileJava {
-            sourceCompatibility = Jvm.version
-            targetCompatibility = Jvm.version
+            sourceCompatibility = Versions.jvm
+            targetCompatibility = Versions.jvm
         }
 
         compileKotlin {
             kotlinOptions {
                 freeCompilerArgs = listOf("-Xjsr305=strict")
-                jvmTarget = Jvm.version
+                jvmTarget = Versions.jvm
             }
         }
 
         compileTestKotlin {
             kotlinOptions {
                 freeCompilerArgs = listOf("-Xjsr305=strict")
-                jvmTarget = Jvm.version
+                jvmTarget = Versions.jvm
             }
         }
     }
