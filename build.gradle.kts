@@ -50,6 +50,7 @@ subprojects {
         implementation(Libs.Kotlin.coroutinesReactor)
         implementation(Libs.Kotlin.logging)
     }
+
     tasks {
         compileJava {
             sourceCompatibility = Versions.jvm

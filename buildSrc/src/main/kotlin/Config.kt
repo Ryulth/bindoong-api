@@ -19,13 +19,15 @@ object Versions {
     const val jvm = "1.8"
     const val kotlin = "1.5.20"
     const val kotlinxCoroutines = "1.5.1"
+    const val kotlinLogging = "2.0.6"
     const val springBoot = "2.5.3"
     const val springDependencyManagement = "1.0.11.RELEASE"
     const val flyway = "5.2.1"
     const val javaJwt = "3.15.0"
     const val mysql = "8.0.13"
     const val swagger = "3.0.0"
-    const val kotlinLogging = "2.0.6"
+    const val guava = "30.1.1-jre"
+    const val jackson = "2.12.4"
 }
 
 object Libs {
@@ -42,7 +44,18 @@ object Libs {
         const val security = "org.springframework.boot:spring-boot-starter-security"
         const val test = "org.springframework.boot:spring-boot-starter-test"
     }
+    object Jackson {
+        const val bom = "com.fasterxml.jackson:jackson-bom:${Versions.jackson}"
+        const val annotations = "com.fasterxml.jackson.core:jackson-annotations"
+        const val datatypeJdk8 = "com.fasterxml.jackson.datatype:jackson-datatype-jdk8"
+        const val datatypeJsr310 = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+        const val moduleKotlin = "com.fasterxml.jackson.module:jackson-module-kotlin"
+        const val moduleAfterburner = "com.fasterxml.jackson.module:jackson-module-afterburner"
+    }
     object Auth0 {
         const val javaJwt = "com.auth0:java-jwt:${Versions.javaJwt}"
+    }
+    object Google {
+        const val guava = "com.google.guava:guava:${Versions.guava}"
     }
 }

@@ -1,4 +1,6 @@
 dependencies {
+    api(project(":bindoong-core"))
+
     implementation(Libs.SpringBoot.webflux)
     implementation(Libs.SpringBoot.actuator)
     implementation(Libs.SpringBoot.security)
