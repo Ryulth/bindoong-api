@@ -14,7 +14,7 @@ class HealthCheckController(
     @GetMapping
     suspend fun healthCheck() = ResponseEntity.ok().build<Nothing>()
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('BASIC')")
     @GetMapping("/auth")
     suspend fun healthAuthCheck() = ResponseEntity.ok(UserSessionUtils.getCurrentUserId())
 

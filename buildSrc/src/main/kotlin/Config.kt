@@ -58,4 +58,7 @@ object Libs {
     object Google {
         const val guava = "com.google.guava:guava:${Versions.guava}"
     }
+    object SpringFox {
+        const val starter = "io.springfox:springfox-boot-starter:${Versions.swagger}"
+    }
 }

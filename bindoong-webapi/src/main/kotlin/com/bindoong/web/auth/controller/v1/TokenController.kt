@@ -1,5 +1,6 @@
-package com.bindoong.web.auth.controller
+package com.bindoong.web.auth.controller.v1
 
+import com.bindoong.web.auth.dto.TokenResponse
 import com.bindoong.web.security.TokenProvider
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -34,23 +35,17 @@ class TokenController(
             ]
         )
         @RequestBody request: AccessTokenRequest
-    ): AccessTokenResponse =
-        AccessTokenResponse(
+    ): TokenResponse =
+        TokenResponse(
             tokenProvider.createToken(request.userId),
             tokenProvider.getTokenPrefix()
         )
-
-    data class AccessTokenResponse(
-        val accessToken: String,
-        val type: String
-    )
 
     data class AccessTokenRequest(
         val userId: Long
     )
 
     companion object : KLogging() {
-        const val BASE_PATH = "/token"
-        const val SECONDS_TO_ADD: Long = 3600
+        const val BASE_PATH = "/v1/token"
     }
 }

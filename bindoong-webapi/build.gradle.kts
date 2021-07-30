@@ -5,7 +5,7 @@ dependencies {
     implementation(Libs.SpringBoot.actuator)
     implementation(Libs.SpringBoot.security)
     implementation(Libs.Auth0.javaJwt)
-    implementation("io.springfox:springfox-boot-starter:3.0.0")
+    implementation(Libs.SpringFox.starter)
     testImplementation(Libs.SpringBoot.test) {
         exclude(module = "junit")
         exclude(module = "junit-vintage-engine")
