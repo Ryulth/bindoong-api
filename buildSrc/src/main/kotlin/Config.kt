@@ -24,7 +24,7 @@ object Versions {
     const val springDependencyManagement = "1.0.11.RELEASE"
     const val flyway = "5.2.1"
     const val javaJwt = "3.15.0"
-    const val mysql = "8.0.13"
+    const val r2dbcMysql = "0.8.2.RELEASE"
     const val swagger = "3.0.0"
     const val guava = "30.1.1-jre"
     const val jackson = "2.12.4"
@@ -39,10 +39,17 @@ object Libs {
         const val coroutinesReactor = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor:${Versions.kotlinxCoroutines}"
     }
     object SpringBoot {
+        const val autoconfigure = "org.springframework.boot:spring-boot-autoconfigure"
         const val webflux = "org.springframework.boot:spring-boot-starter-webflux"
         const val actuator = "org.springframework.boot:spring-boot-starter-actuator"
         const val security = "org.springframework.boot:spring-boot-starter-security"
         const val test = "org.springframework.boot:spring-boot-starter-test"
+    }
+
+    object SpringData {
+        const val r2dbc = "org.springframework.data:spring-data-r2dbc"
+        const val r2dbcMysql = "dev.miku:r2dbc-mysql:${Versions.r2dbcMysql}"
+        const val relational = "org.springframework.data:spring-data-relational"
     }
     object Jackson {
         const val bom = "com.fasterxml.jackson:jackson-bom:${Versions.jackson}"
