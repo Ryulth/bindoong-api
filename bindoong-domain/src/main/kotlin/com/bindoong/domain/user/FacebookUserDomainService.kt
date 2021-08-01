@@ -8,12 +8,12 @@ class FacebookUserDomainService(
     private val facebookUserRepository: FacebookUserRepository
 ) {
     @Transactional
-    suspend fun create(parameter: FacebookUserCreateParameter, user: User): FacebookUser =
+    suspend fun create(parameter: FacebookUserCreateParameter): FacebookUser =
         this.save(
             FacebookUser(
                 facebookId = parameter.facebookId,
                 lastAccessToken = parameter.lastAccessToken,
-                user = user
+                userId = parameter.userId
             )
         )
 

@@ -5,6 +5,6 @@ import org.springframework.data.annotation.Id
 class FacebookUser(
     @Id
     val facebookId: String,
-    var lastAccessToken: String,
-    val user: User
+    val userId: Long,
+    var lastAccessToken: String
 )

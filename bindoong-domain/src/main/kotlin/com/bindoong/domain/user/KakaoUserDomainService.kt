@@ -8,12 +8,12 @@ class KakaoUserDomainService(
     private val kakaoUserRepository: KakaoUserRepository
 ) {
     @Transactional
-    suspend fun create(parameter: KakaoUserCreateParameter, user: User): KakaoUser =
+    suspend fun create(parameter: KakaoUserCreateParameter): KakaoUser =
         this.save(
             KakaoUser(
                 kakaoId = parameter.kakaoId,
                 lastAccessToken = parameter.lastAccessToken,
-                user = user
+                userId = parameter.userId
             )
         )
 

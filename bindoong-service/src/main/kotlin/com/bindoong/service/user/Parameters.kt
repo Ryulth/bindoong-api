@@ -1,16 +1,16 @@
-package com.bindoong.service.auth
+package com.bindoong.service.user
 
 /**
  * 로그인 요청 DTO
  */
 sealed class LoginParameter
 
-class KakaoLoginParameter(
+data class KakaoLoginParameter(
     val kakaoId: String,
     val accessToken: String,
 ): LoginParameter()
 
-class FacebookLoginParameter(
+data class FacebookLoginParameter(
     val facebookId: String,
     val accessToken: String,
 ): LoginParameter()
@@ -19,17 +19,17 @@ class FacebookLoginParameter(
  * 회원가입 요청 DTO
  */
 sealed class RegisterParameter(
-    val nickname: String
+    open val nickname: String
 )
 
-class KakaoRegisterParameter(
+data class KakaoRegisterParameter(
     val kakaoId: String,
     val accessToken: String,
-    nickname: String
+    override val nickname: String
 ): RegisterParameter(nickname)
 
-class FacebookRegisterParameter(
+data class FacebookRegisterParameter(
     val facebookId: String,
     val accessToken: String,
-    nickname: String
+    override val nickname: String
 ): RegisterParameter(nickname)
