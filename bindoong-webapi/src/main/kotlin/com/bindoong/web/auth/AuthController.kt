@@ -1,11 +1,5 @@
-package com.bindoong.web.auth.controller.v1
+package com.bindoong.web.auth
 
-import com.bindoong.web.auth.dto.FacebookLoginRequest
-import com.bindoong.web.auth.dto.FacebookRegisterRequest
-import com.bindoong.web.auth.dto.KakaoLoginRequest
-import com.bindoong.web.auth.dto.KakaoRegisterRequest
-import com.bindoong.web.auth.dto.TokenResponse
-import com.bindoong.web.auth.service.AuthApiService
 import com.bindoong.web.security.UserSessionUtils
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.security.access.prepost.PreAuthorize

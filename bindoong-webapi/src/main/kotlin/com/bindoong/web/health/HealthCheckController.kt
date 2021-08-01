@@ -1,4 +1,4 @@
-package com.bindoong.web.health.controller
+package com.bindoong.web.health
 
 import com.bindoong.web.security.UserSessionUtils
 import org.springframework.http.ResponseEntity

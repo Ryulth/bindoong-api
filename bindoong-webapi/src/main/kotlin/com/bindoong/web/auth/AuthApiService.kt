@@ -1,10 +1,10 @@
-package com.bindoong.web.auth.service
+package com.bindoong.web.auth
 
-import com.bindoong.web.auth.dto.FacebookLoginRequest
-import com.bindoong.web.auth.dto.FacebookRegisterRequest
-import com.bindoong.web.auth.dto.KakaoLoginRequest
-import com.bindoong.web.auth.dto.KakaoRegisterRequest
-import com.bindoong.web.auth.dto.TokenResponse
+import com.bindoong.web.auth.FacebookLoginRequest
+import com.bindoong.web.auth.FacebookRegisterRequest
+import com.bindoong.web.auth.KakaoLoginRequest
+import com.bindoong.web.auth.KakaoRegisterRequest
+import com.bindoong.web.auth.TokenResponse
 import com.bindoong.web.security.TokenProvider
 import mu.KLogging
 import org.springframework.stereotype.Service

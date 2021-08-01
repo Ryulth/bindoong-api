@@ -1,4 +1,4 @@
-package com.bindoong.web.auth.dto
+package com.bindoong.web.auth
 
 data class TokenResponse(
     val accessToken: String,

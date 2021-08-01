@@ -1,6 +1,5 @@
-package com.bindoong.web.auth.controller.v1
+package com.bindoong.web.auth
 
-import com.bindoong.web.auth.dto.TokenResponse
 import com.bindoong.web.security.TokenProvider
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
