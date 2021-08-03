@@ -1,10 +1,12 @@
 package com.bindoong.web.auth
 
-import com.bindoong.web.auth.FacebookLoginRequest
-import com.bindoong.web.auth.FacebookRegisterRequest
-import com.bindoong.web.auth.KakaoLoginRequest
-import com.bindoong.web.auth.KakaoRegisterRequest
-import com.bindoong.web.auth.TokenResponse
+import com.bindoong.service.user.FacebookLoginParameter
+import com.bindoong.service.user.FacebookRegisterParameter
+import com.bindoong.service.user.FacebookUserService
+import com.bindoong.service.user.KakaoLoginParameter
+import com.bindoong.service.user.KakaoRegisterParameter
+import com.bindoong.service.user.KakaoUserService
+import com.bindoong.service.user.UserService
 import com.bindoong.web.security.TokenProvider
 import mu.KLogging
 import org.springframework.stereotype.Service
@@ -12,51 +14,64 @@ import org.springframework.stereotype.Service
 @Service
 class AuthApiService(
     private val tokenProvider: TokenProvider,
-//    private val authService
-//    private val kakaoAuthService: KakaoAuthService,
-//    private val appleAuthService: AppleAuthService,
-//    // TODO 리펙토링 가즈아
-//    private val userDomainService: UserDomainService
+    private val userService: UserService,
+    private val kakaoUserService: KakaoUserService,
+    private val facebookUserService: FacebookUserService,
 ) {
-    fun registerKakaoUser(registerRequest: KakaoRegisterRequest): TokenResponse {
-//        val user = kakaoAuthService.register(registerRequest)
-//        return tokenProvider.createToken(user.id!!, user.nickName, user.roles)
-        TODO()
+    suspend fun registerKakaoUser(registerRequest: KakaoRegisterRequest): TokenResponse {
+        val user = kakaoUserService.register(registerParameter = registerRequest.toRegisterParameter())
+        return TokenResponse(tokenProvider.createToken(user.id!!))
     }
 
-    fun loginKakaoUser(loginRequest: KakaoLoginRequest): TokenResponse {
-//        val user = kakaoAuthService.login(loginRequest)
-//        return tokenProvider.createToken(user.id!!, user.nickName, user.roles)
-        TODO()
+    suspend fun loginKakaoUser(loginRequest: KakaoLoginRequest): TokenResponse {
+        val user = kakaoUserService.login(loginRequest.toLoginParameter())
+        return TokenResponse(tokenProvider.createToken(user.id!!))
     }
 
-    fun registerFacebookUser(registerRequest: FacebookRegisterRequest): TokenResponse {
-//        val user = facebookAuthService.register(registerRequest)
-//        return tokenProvider.createToken(user.id!!, user.nickName, user.roles)
-        TODO()
+    suspend fun registerFacebookUser(registerRequest: FacebookRegisterRequest): TokenResponse {
+        val user = facebookUserService.register(registerParameter = registerRequest.toRegisterParameter())
+        return TokenResponse(tokenProvider.createToken(user.id!!))
     }
 
-    fun loginFacebookUser(loginRequest: FacebookLoginRequest): TokenResponse {
-//        val user = facebookAuthService.login(loginRequest)
-//        return tokenProvider.createToken(user.id!!, user.nickName, user.roles)
-        TODO()
+    suspend fun loginFacebookUser(loginRequest: FacebookLoginRequest): TokenResponse {
+        val user = facebookUserService.login(loginRequest.toLoginParameter())
+        return TokenResponse(tokenProvider.createToken(user.id!!))
     }
 
-    fun refreshToken(refreshToken: String): TokenResponse {
+//    fun refreshToken(refreshToken: String): TokenResponse {
 //        val token: String = tokenProvider.removePrefix(refreshToken)
 //        return tokenProvider.refreshToken(token)
-        TODO()
+//    }
+
+    suspend fun withdrawUser(userId: Long) {
+        kakaoUserService.withDraw(userId)
+        facebookUserService.withDraw(userId)
+
+        // 연관 관계가 있을 수 있어서 user 는 마지막에 삭제한다.
+        userService.withDraw(userId)
     }
 
-    fun withdrawUser(userId: Long) {
-        //authDomainService.withdraw
-//        val user = userService.get(userId)
-//        when (user.loginType) {
-//            LoginType.KAKAO -> kakaoAuthService.withDraw(userId)
-//            LoginType.APPLE -> appleAuthService.withDraw(userId)
-//            LoginType.EMAIL -> logger.error { "Email User not supported" }
-//        }
-    }
+    private fun KakaoRegisterRequest.toRegisterParameter() = KakaoRegisterParameter(
+        kakaoId = kakaoId,
+        accessToken = accessToken,
+        nickname = nickname
+    )
 
-    companion object: KLogging()
+    private fun KakaoLoginRequest.toLoginParameter() = KakaoLoginParameter(
+        kakaoId = kakaoId,
+        accessToken = accessToken
+    )
+
+    private fun FacebookRegisterRequest.toRegisterParameter() = FacebookRegisterParameter(
+        facebookId = facebookId,
+        accessToken = accessToken,
+        nickname = nickname
+    )
+
+    private fun FacebookLoginRequest.toLoginParameter() = FacebookLoginParameter(
+        facebookId = facebookId,
+        accessToken = accessToken
+    )
+
+    companion object : KLogging()
 }

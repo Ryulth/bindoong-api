@@ -26,12 +26,20 @@ import java.util.Date
 class JwtTokenProvider(
     @Value("\${jwt.public-key}") private val publicKey: String,
     @Value("\${jwt.private-key}") private val privateKey: String,
-): TokenProvider {
-    override fun createToken(userId: Long): String =
-        JWT.create()
+) : TokenProvider {
+    override fun createToken(userId: Long): Token {
+        val accessToken = JWT.create()
             .withPayload(JwtPayload(userId).asMap())
             .withExpiresAt(Date.from(Instant.now().plusSeconds(3600)))
             .sign(Algorithm.RSA256(rsaPublicKey, rsaPrivateKey))
+        // TODO refresh 발급 로직 추가dd
+        return Token(
+            accessToken = accessToken,
+            type = TOKEN_PREFIX,
+            expiresAt = 0,
+            refreshToken = accessToken
+        )
+    }
 
     override fun getTokenPrefix(): String = TOKEN_PREFIX
 

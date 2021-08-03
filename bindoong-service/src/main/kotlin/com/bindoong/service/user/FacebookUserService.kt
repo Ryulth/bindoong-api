@@ -46,6 +46,5 @@ class FacebookUserService(
 
     override suspend fun delete(userId: Long) {
         facebookUserDomainService.delete(userId)
-        userDomainService.delete(userId)
     }
 }

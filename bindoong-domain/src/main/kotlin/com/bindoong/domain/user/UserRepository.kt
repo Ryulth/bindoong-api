@@ -4,4 +4,4 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-internal interface UserRepository: CoroutineCrudRepository<User, Long>
+interface UserRepository: CoroutineCrudRepository<User, Long>

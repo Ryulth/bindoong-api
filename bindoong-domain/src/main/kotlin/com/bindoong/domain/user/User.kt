@@ -11,7 +11,6 @@ class User(
     val id: Long? = null,
     val uuid: String = UUID.randomUUID().toString().replace("-", ""),
     val nickName: String,
-    val email: String?,
     val loginType: LoginType,
     val roles: Set<Role>,
     @CreatedDate

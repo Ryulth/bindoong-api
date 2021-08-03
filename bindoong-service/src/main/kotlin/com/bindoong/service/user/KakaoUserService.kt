@@ -46,6 +46,5 @@ class KakaoUserService(
 
     override suspend fun delete(userId: Long) {
         kakaoUserDomainService.delete(userId)
-        userDomainService.delete(userId)
     }
 }
