@@ -36,8 +36,7 @@ class TokenController(
         @RequestBody request: AccessTokenRequest
     ): TokenResponse =
         TokenResponse(
-            tokenProvider.createToken(request.userId),
-            tokenProvider.getTokenPrefix()
+            tokenProvider.createToken(request.userId)
         )
 
     data class AccessTokenRequest(

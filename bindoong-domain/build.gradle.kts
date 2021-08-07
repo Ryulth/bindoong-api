@@ -1,6 +1,6 @@
 dependencies {
     api(project(":bindoong-core"))
 
-    implementation(Libs.SpringBoot.autoconfigure)
-    implementation(Libs.SpringData.relational)
+    api(Libs.Spring.autoconfigure)
+    api(Libs.Spring.relational)
 }

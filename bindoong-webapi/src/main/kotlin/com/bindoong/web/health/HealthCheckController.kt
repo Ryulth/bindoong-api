@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping(HealthCheckController.BASE_PATH)
-class HealthCheckController(
-) {
+class HealthCheckController() {
     @GetMapping
     suspend fun healthCheck() = ResponseEntity.ok().build<Nothing>()
 

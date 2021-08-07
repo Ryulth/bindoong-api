@@ -1,24 +1,28 @@
 package com.bindoong.service.user
 
 import com.bindoong.domain.user.User
+import org.springframework.transaction.annotation.Transactional
 
 abstract class AbstractUserService<T : RegisterParameter, S : LoginParameter> {
-    suspend fun register(registerParameter: T): User {
+    @Transactional
+    open suspend fun register(registerParameter: T): User {
         if (isExist(registerParameter)) {
             throw UserAlreadyExistException("User already exist request: $registerParameter")
         }
         registerParameter.nickname.run {
-            require(this.isBlank()) { "Register nickname is invalid" }
+            require(this.isNotEmpty()) { "Register nickname $this is invalid" }
         }
         validateRegister(registerParameter)
         return create(registerParameter)
     }
 
-    suspend fun login(loginParameter: S): User {
+    @Transactional
+    open suspend fun login(loginParameter: S): User {
         return get(loginParameter)
     }
 
-    suspend fun withDraw(userId: Long) {
+    @Transactional
+    open suspend fun withDraw(userId: Long) {
         delete(userId)
     }
 

@@ -8,6 +8,7 @@ import com.bindoong.domain.user.User
 import com.bindoong.domain.user.UserCreateParameter
 import com.bindoong.domain.user.UserDomainService
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class FacebookUserService(
@@ -22,11 +23,13 @@ class FacebookUserService(
     override suspend fun isExist(registerParameter: FacebookRegisterParameter): Boolean =
         facebookUserDomainService.isExist(registerParameter.facebookId)
 
+    @Transactional
     override suspend fun create(registerParameter: FacebookRegisterParameter): User =
+
         userDomainService.create(
             UserCreateParameter(
                 nickName = registerParameter.nickname,
-                loginType = LoginType.KAKAO,
+                loginType = LoginType.FACEBOOK,
                 roles = setOf(Role.ROLE_BASIC)
             )
         ).also {
@@ -34,7 +37,7 @@ class FacebookUserService(
                 FacebookUserCreateParameter(
                     facebookId = registerParameter.facebookId,
                     lastAccessToken = registerParameter.accessToken,
-                    userId = it.id!!
+                    userId = it.userId!!
                 )
             )
         }

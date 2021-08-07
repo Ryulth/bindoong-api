@@ -15,7 +15,7 @@ import org.springframework.security.web.server.context.NoOpServerSecurityContext
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
-class SecurityConfig (
+class SecurityConfig(
     private val tokenProvider: TokenProvider,
     private val authenticationManager: TokenAuthenticationManager
 ) {
@@ -24,7 +24,8 @@ class SecurityConfig (
         http: ServerHttpSecurity,
     ): SecurityWebFilterChain {
         http.authenticationManager(authenticationManager)
-            .addFilterBefore(TokenAuthorizationFilter(authenticationManager, tokenProvider),
+            .addFilterBefore(
+                TokenAuthorizationFilter(authenticationManager, tokenProvider),
                 SecurityWebFiltersOrder.HTTP_BASIC
             )
 

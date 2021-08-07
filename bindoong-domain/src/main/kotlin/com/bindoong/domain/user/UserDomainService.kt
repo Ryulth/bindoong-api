@@ -11,9 +11,9 @@ class UserDomainService(
     suspend fun create(parameter: UserCreateParameter): User =
         this.save(
             User(
-                nickName = parameter.nickName,
+                nickname = parameter.nickName,
                 loginType = parameter.loginType,
-                roles = parameter.roles
+                roles = parameter.roles.first()
             )
         )
 

@@ -6,13 +6,13 @@ import org.springframework.data.annotation.LastModifiedDate
 import java.time.LocalDateTime
 import java.util.UUID
 
-class User(
+data class User(
     @Id
-    val id: Long? = null,
+    val userId: Long? = null,
     val uuid: String = UUID.randomUUID().toString().replace("-", ""),
-    val nickName: String,
+    val nickname: String,
     val loginType: LoginType,
-    val roles: Set<Role>,
+    val roles: Role,
     @CreatedDate
     val createdDateTime: LocalDateTime = LocalDateTime.now(),
     @LastModifiedDate

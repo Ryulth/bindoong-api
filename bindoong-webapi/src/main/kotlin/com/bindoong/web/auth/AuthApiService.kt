@@ -20,22 +20,22 @@ class AuthApiService(
 ) {
     suspend fun registerKakaoUser(registerRequest: KakaoRegisterRequest): TokenResponse {
         val user = kakaoUserService.register(registerParameter = registerRequest.toRegisterParameter())
-        return TokenResponse(tokenProvider.createToken(user.id!!))
+        return TokenResponse(tokenProvider.createToken(user.userId!!))
     }
 
     suspend fun loginKakaoUser(loginRequest: KakaoLoginRequest): TokenResponse {
         val user = kakaoUserService.login(loginRequest.toLoginParameter())
-        return TokenResponse(tokenProvider.createToken(user.id!!))
+        return TokenResponse(tokenProvider.createToken(user.userId!!))
     }
 
     suspend fun registerFacebookUser(registerRequest: FacebookRegisterRequest): TokenResponse {
         val user = facebookUserService.register(registerParameter = registerRequest.toRegisterParameter())
-        return TokenResponse(tokenProvider.createToken(user.id!!))
+        return TokenResponse(tokenProvider.createToken(user.userId!!))
     }
 
     suspend fun loginFacebookUser(loginRequest: FacebookLoginRequest): TokenResponse {
         val user = facebookUserService.login(loginRequest.toLoginParameter())
-        return TokenResponse(tokenProvider.createToken(user.id!!))
+        return TokenResponse(tokenProvider.createToken(user.userId!!))
     }
 
 //    fun refreshToken(refreshToken: String): TokenResponse {

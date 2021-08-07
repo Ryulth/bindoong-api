@@ -8,12 +8,12 @@ sealed class LoginParameter
 data class KakaoLoginParameter(
     val kakaoId: String,
     val accessToken: String,
-): LoginParameter()
+) : LoginParameter()
 
 data class FacebookLoginParameter(
     val facebookId: String,
     val accessToken: String,
-): LoginParameter()
+) : LoginParameter()
 
 /**
  * 회원가입 요청 DTO
@@ -26,10 +26,10 @@ data class KakaoRegisterParameter(
     val kakaoId: String,
     val accessToken: String,
     override val nickname: String
-): RegisterParameter(nickname)
+) : RegisterParameter(nickname)
 
 data class FacebookRegisterParameter(
     val facebookId: String,
     val accessToken: String,
     override val nickname: String
-): RegisterParameter(nickname)
+) : RegisterParameter(nickname)

@@ -1,10 +1,12 @@
 package com.bindoong.domain.user
 
-import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface FacebookUserRepository: CoroutineCrudRepository<FacebookUser, String> {
+interface FacebookUserRepository {
+    suspend fun save(facebookUser: FacebookUser): FacebookUser
+    suspend fun existsById(facebookId: String): Boolean
+    suspend fun findById(facebookId: String): FacebookUser?
     suspend fun findByUserId(userId: Long): FacebookUser?
     suspend fun deleteByUserId(userId: Long)
 }

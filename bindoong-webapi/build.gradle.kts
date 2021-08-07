@@ -1,13 +1,14 @@
 dependencies {
     api(project(":bindoong-core"))
     api(project(":bindoong-service"))
+    api(project(":bindoong-infrastructure"))
 
-    implementation(Libs.SpringBoot.webflux)
-    implementation(Libs.SpringBoot.actuator)
-    implementation(Libs.SpringBoot.security)
-    implementation(Libs.Auth0.javaJwt)
-    implementation(Libs.SpringFox.starter)
-    testImplementation(Libs.SpringBoot.test) {
+    api(Libs.Spring.webflux)
+    api(Libs.Spring.actuator)
+    api(Libs.Spring.security)
+    api(Libs.Auth0.javaJwt)
+    api(Libs.SpringFox.starter)
+    testApi(Libs.Spring.test) {
         exclude(module = "junit")
         exclude(module = "junit-vintage-engine")
     }

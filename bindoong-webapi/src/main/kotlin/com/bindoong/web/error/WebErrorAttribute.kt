@@ -2,7 +2,6 @@ package com.bindoong.web.error
 
 import com.bindoong.core.utils.JsonUtils.convertValueAsMap
 import com.bindoong.core.utils.JsonUtils.objectMapper
-import com.fasterxml.jackson.core.type.TypeReference
 import java.util.Date
 
 data class WebErrorAttribute(
