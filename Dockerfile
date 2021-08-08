@@ -1,7 +1,7 @@
-FROM java:8
+FROM openjdk:8-jdk-alpine
 LABEL maintainer="dev.ryulth@gmail.com"
-VOLUME /tmp
-EXPOSE 8080
-ARG JAR_FILE=build/libs/bindoong-webapi.jar
-ADD ${JAR_FILE} bindoong-webapi.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/bindoong-webapi.jar"]
+
+COPY bindoong-webapi/build/libs/bindoong-webapi-*.jar /opt/bindoong/service.jar
+WORKDIR /opt/bindoong
+
+ENTRYPOINT java ${JAVA_OPTIONS} -jar service.jar
