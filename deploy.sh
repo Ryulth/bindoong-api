@@ -40,4 +40,4 @@ JAVA_OPTIONS="
 "
 
 docker build --tag bindoong-webapi .
-docker run -p "${PORT}":8080 -e JAVA_OPTIONS="${JAVA_OPTIONS}" bindoong-webapi
+docker run -d -p "${PORT}":8080 -e JAVA_OPTIONS="${JAVA_OPTIONS}" bindoong-webapi
