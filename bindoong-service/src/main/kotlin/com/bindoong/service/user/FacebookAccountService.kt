@@ -11,21 +11,17 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class FacebookUserService(
+class FacebookAccountService(
     private val facebookUserDomainService: FacebookUserDomainService,
     private val userDomainService: UserDomainService
-) : AbstractUserService<FacebookRegisterParameter, FacebookLoginParameter>() {
-
+) : AbstractAccountService<FacebookRegisterParameter, FacebookLoginParameter>() {
+    @Transactional
     override suspend fun validateRegister(registerParameter: FacebookRegisterParameter) {
         // TODO 인증
     }
 
-    override suspend fun isExist(registerParameter: FacebookRegisterParameter): Boolean =
-        facebookUserDomainService.isExist(registerParameter.facebookId)
-
     @Transactional
-    override suspend fun create(registerParameter: FacebookRegisterParameter): User =
-
+    override suspend fun doRegister(registerParameter: FacebookRegisterParameter): User =
         userDomainService.create(
             UserCreateParameter(
                 nickName = registerParameter.nickname,
@@ -42,12 +38,23 @@ class FacebookUserService(
             )
         }
 
-    override suspend fun get(loginParameter: FacebookLoginParameter): User =
+    @Transactional
+    override suspend fun validateLogin(loginParameter: FacebookLoginParameter) {
+        // TODO 인증
+    }
+
+    @Transactional
+    override suspend fun doLogin(loginParameter: FacebookLoginParameter): User =
         facebookUserDomainService.get(loginParameter.facebookId)
             ?.let { userDomainService.get(it.userId) }
             ?: throw UserNotFoundException("Facebook user not found login request $loginParameter")
 
-    override suspend fun delete(userId: Long) {
+    @Transactional
+    override suspend fun isExist(registerParameter: FacebookRegisterParameter): Boolean =
+        facebookUserDomainService.isExist(registerParameter.facebookId)
+
+    @Transactional
+    override suspend fun doWithDraw(userId: Long) {
         facebookUserDomainService.delete(userId)
     }
 }

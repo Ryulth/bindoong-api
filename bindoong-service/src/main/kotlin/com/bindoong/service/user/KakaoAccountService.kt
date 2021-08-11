@@ -7,22 +7,24 @@ import com.bindoong.domain.user.Role
 import com.bindoong.domain.user.User
 import com.bindoong.domain.user.UserCreateParameter
 import com.bindoong.domain.user.UserDomainService
+import com.bindoong.infrastructure.client.KakaoApiClient
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
-class KakaoUserService(
+class KakaoAccountService(
     private val kakaoUserDomainService: KakaoUserDomainService,
-    private val userDomainService: UserDomainService
-) : AbstractUserService<KakaoRegisterParameter, KakaoLoginParameter>() {
-
+    private val userDomainService: UserDomainService,
+    private val kakaoApiClient: KakaoApiClient
+) : AbstractAccountService<KakaoRegisterParameter, KakaoLoginParameter>() {
+    @Transactional
     override suspend fun validateRegister(registerParameter: KakaoRegisterParameter) {
+//        kakaoApiClient.getUserInfo(registerParameter.accessToken)
         // TODO 인증
     }
 
-    override suspend fun isExist(registerParameter: KakaoRegisterParameter): Boolean =
-        kakaoUserDomainService.isExist(registerParameter.kakaoId)
-
-    override suspend fun create(registerParameter: KakaoRegisterParameter): User =
+    @Transactional
+    override suspend fun doRegister(registerParameter: KakaoRegisterParameter): User =
         userDomainService.create(
             UserCreateParameter(
                 nickName = registerParameter.nickname,
@@ -39,12 +41,24 @@ class KakaoUserService(
             )
         }
 
-    override suspend fun get(loginParameter: KakaoLoginParameter): User =
+    @Transactional
+    override suspend fun validateLogin(loginParameter: KakaoLoginParameter) {
+//        kakaoApiClient.getUserInfo(loginParameter.accessToken)
+        // TODO 인증
+    }
+
+    @Transactional
+    override suspend fun doLogin(loginParameter: KakaoLoginParameter): User =
         kakaoUserDomainService.get(loginParameter.kakaoId)
             ?.let { userDomainService.get(it.userId) }
             ?: throw UserNotFoundException("Kakao user not found login request $loginParameter")
 
-    override suspend fun delete(userId: Long) {
+    @Transactional
+    override suspend fun isExist(registerParameter: KakaoRegisterParameter): Boolean =
+        kakaoUserDomainService.isExist(registerParameter.kakaoId)
+
+    @Transactional
+    override suspend fun doWithDraw(userId: Long) {
         kakaoUserDomainService.delete(userId)
     }
 }

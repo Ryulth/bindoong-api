@@ -11,6 +11,9 @@ import org.springframework.security.config.web.server.SecurityWebFiltersOrder
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.reactive.CorsConfigurationSource
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebFluxSecurity
@@ -35,8 +38,20 @@ class SecurityConfig(
             logout { it.disable() }
             httpBasic { it.disable() }
             csrf { it.disable() }
+            cors { it.configurationSource(configurationSource) }
         }
 
         return http.build()
+    }
+
+    private val configurationSource = UrlBasedCorsConfigurationSource().apply {
+        registerCorsConfiguration("/**", corsConfiguration)
+    } as CorsConfigurationSource
+
+    private val corsConfiguration = CorsConfiguration().apply {
+        allowedOrigins = listOf("*")
+        allowedHeaders = listOf("*")
+        allowedMethods = listOf("*")
+        allowCredentials = true
     }
 }

@@ -3,7 +3,7 @@ package com.bindoong.service.user
 import com.bindoong.domain.user.User
 import org.springframework.transaction.annotation.Transactional
 
-abstract class AbstractUserService<T : RegisterParameter, S : LoginParameter> {
+abstract class AbstractAccountService<T : RegisterParameter, S : LoginParameter> {
     @Transactional
     open suspend fun register(registerParameter: T): User {
         if (isExist(registerParameter)) {
@@ -13,22 +13,24 @@ abstract class AbstractUserService<T : RegisterParameter, S : LoginParameter> {
             require(this.isNotEmpty()) { "Register nickname $this is invalid" }
         }
         validateRegister(registerParameter)
-        return create(registerParameter)
+        return doRegister(registerParameter)
     }
 
     @Transactional
     open suspend fun login(loginParameter: S): User {
-        return get(loginParameter)
+        validateLogin(loginParameter)
+        return doLogin(loginParameter)
     }
 
     @Transactional
     open suspend fun withDraw(userId: Long) {
-        delete(userId)
+        doWithDraw(userId)
     }
 
+    protected abstract suspend fun doRegister(registerParameter: T): User
     protected abstract suspend fun validateRegister(registerParameter: T)
-    protected abstract suspend fun get(loginParameter: S): User
+    protected abstract suspend fun doLogin(loginParameter: S): User
+    protected abstract suspend fun validateLogin(loginParameter: S)
     protected abstract suspend fun isExist(registerParameter: T): Boolean
-    protected abstract suspend fun create(registerParameter: T): User
-    protected abstract suspend fun delete(userId: Long)
+    protected abstract suspend fun doWithDraw(userId: Long)
 }

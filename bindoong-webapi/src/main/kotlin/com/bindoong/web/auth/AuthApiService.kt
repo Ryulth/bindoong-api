@@ -1,11 +1,11 @@
 package com.bindoong.web.auth
 
+import com.bindoong.service.user.FacebookAccountService
 import com.bindoong.service.user.FacebookLoginParameter
 import com.bindoong.service.user.FacebookRegisterParameter
-import com.bindoong.service.user.FacebookUserService
+import com.bindoong.service.user.KakaoAccountService
 import com.bindoong.service.user.KakaoLoginParameter
 import com.bindoong.service.user.KakaoRegisterParameter
-import com.bindoong.service.user.KakaoUserService
 import com.bindoong.service.user.UserService
 import com.bindoong.web.security.TokenProvider
 import mu.KLogging
@@ -15,26 +15,26 @@ import org.springframework.stereotype.Service
 class AuthApiService(
     private val tokenProvider: TokenProvider,
     private val userService: UserService,
-    private val kakaoUserService: KakaoUserService,
-    private val facebookUserService: FacebookUserService,
+    private val kakaoAccountService: KakaoAccountService,
+    private val facebookAccountService: FacebookAccountService,
 ) {
     suspend fun registerKakaoUser(registerRequest: KakaoRegisterRequest): TokenResponse {
-        val user = kakaoUserService.register(registerParameter = registerRequest.toRegisterParameter())
+        val user = kakaoAccountService.register(registerParameter = registerRequest.toRegisterParameter())
         return TokenResponse(tokenProvider.createToken(user.userId!!))
     }
 
     suspend fun loginKakaoUser(loginRequest: KakaoLoginRequest): TokenResponse {
-        val user = kakaoUserService.login(loginRequest.toLoginParameter())
+        val user = kakaoAccountService.login(loginRequest.toLoginParameter())
         return TokenResponse(tokenProvider.createToken(user.userId!!))
     }
 
     suspend fun registerFacebookUser(registerRequest: FacebookRegisterRequest): TokenResponse {
-        val user = facebookUserService.register(registerParameter = registerRequest.toRegisterParameter())
+        val user = facebookAccountService.register(registerParameter = registerRequest.toRegisterParameter())
         return TokenResponse(tokenProvider.createToken(user.userId!!))
     }
 
     suspend fun loginFacebookUser(loginRequest: FacebookLoginRequest): TokenResponse {
-        val user = facebookUserService.login(loginRequest.toLoginParameter())
+        val user = facebookAccountService.login(loginRequest.toLoginParameter())
         return TokenResponse(tokenProvider.createToken(user.userId!!))
     }
 
@@ -44,8 +44,8 @@ class AuthApiService(
 //    }
 
     suspend fun withdrawUser(userId: Long) {
-        kakaoUserService.withDraw(userId)
-        facebookUserService.withDraw(userId)
+        kakaoAccountService.withDraw(userId)
+        facebookAccountService.withDraw(userId)
 
         // 연관 관계가 있을 수 있어서 user 는 마지막에 삭제한다.
         userService.withDraw(userId)

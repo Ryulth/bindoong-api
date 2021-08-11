@@ -7,4 +7,5 @@ dependencies {
     api(Libs.Spring.r2dbcMysql)
     api(Libs.Flyway.core)
     api(Libs.Spring.jdbcMysql)
+    api(Libs.Spring.webflux)
 }
