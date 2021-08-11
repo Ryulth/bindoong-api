@@ -52,6 +52,5 @@ class SecurityConfig(
         allowedOrigins = listOf("*")
         allowedHeaders = listOf("*")
         allowedMethods = listOf("*")
-        allowCredentials = true
     }
 }
