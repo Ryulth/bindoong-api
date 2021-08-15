@@ -47,6 +47,7 @@ subprojects {
         api(Libs.Kotlin.stdlibJdk8)
         api(Libs.Kotlin.reflect)
         api(Libs.Kotlin.coroutinesCore)
+        api(Libs.Kotlin.coroutinesJdk8)
         api(Libs.Kotlin.coroutinesReactor)
         api(Libs.Kotlin.logging)
     }

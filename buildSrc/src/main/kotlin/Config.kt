@@ -28,6 +28,8 @@ object Versions {
     const val swagger = "3.0.0"
     const val guava = "30.1.1-jre"
     const val jackson = "2.12.4"
+    const val aws = "2.17.19"
+    const val apache = "2.11.0"
 }
 
 object Libs {
@@ -36,6 +38,7 @@ object Libs {
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}"
         const val logging = "io.github.microutils:kotlin-logging:${Versions.kotlinLogging}"
         const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutines}"
+        const val coroutinesJdk8 = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${Versions.kotlinxCoroutines}"
         const val coroutinesReactor = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor:${Versions.kotlinxCoroutines}"
     }
     object Spring {
@@ -64,10 +67,18 @@ object Libs {
     object Google {
         const val guava = "com.google.guava:guava:${Versions.guava}"
     }
+    object Apache {
+        const val commonsIo = "commons-io:commons-io:${Versions.apache}"
+    }
     object SpringFox {
         const val starter = "io.springfox:springfox-boot-starter:${Versions.swagger}"
     }
     object Flyway {
         const val core = "org.flywaydb:flyway-core:${Versions.flyway}"
+    }
+    object Aws {
+        const val sts = "software.amazon.awssdk:sts:${Versions.aws}"
+        const val s3 = "software.amazon.awssdk:s3:${Versions.aws}"
+        const val nettyNioClient = "software.amazon.awssdk:netty-nio-client:${Versions.aws}"
     }
 }

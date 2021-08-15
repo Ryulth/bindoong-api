@@ -6,8 +6,10 @@ function usage()
     cat <<EOM
 Usage: $0 [options]
 Options:
- -p, --port            Specify container external port (default 8080)
- --active-profile      Specify spring active profile
+ -p, --port                   Specify container external port (default 8080)
+ --active-profile             Specify spring active profile
+ --aws-access-key-id          Specify AWS_ACCESS_KEY_ID
+ --aws-secret-access-key      Specify AWS_SECRET_ACCESS_KEY
 EOM
 
     exit 1
@@ -24,6 +26,14 @@ function set_options()
                 shift
                 ACTIVE_PROFILE=$1
                 ;;
+            --aws-access-key-id)
+                shift
+                AWS_ACCESS_KEY_ID=$1
+                ;;
+            --aws-secret-access-key)
+                shift
+                AWS_SECRET_ACCESS_KEY=$1
+                ;;
             *)
                 usage
                 ;;
@@ -37,6 +47,8 @@ set_options "$@"
 JAVA_OPTIONS="
   -Djava.security.egd=file:/dev/./urandom \
   -Dspring.profiles.active=${ACTIVE_PROFILE} \
+  -Daws.accessKeyId=${AWS_ACCESS_KEY_ID} \
+  -Daws.secretAccessKey=${AWS_SECRET_ACCESS_KEY} \
 "
 
 docker build --tag bindoong-webapi .
