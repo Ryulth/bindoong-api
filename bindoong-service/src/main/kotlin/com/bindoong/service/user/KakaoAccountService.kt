@@ -7,7 +7,7 @@ import com.bindoong.domain.user.Role
 import com.bindoong.domain.user.User
 import com.bindoong.domain.user.UserCreateParameter
 import com.bindoong.domain.user.UserDomainService
-import com.bindoong.infrastructure.client.KakaoApiClient
+import com.bindoong.infrastructure.client.KakaoClient
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 class KakaoAccountService(
     private val kakaoUserDomainService: KakaoUserDomainService,
     private val userDomainService: UserDomainService,
-    private val kakaoApiClient: KakaoApiClient
+    private val kakaoClient: KakaoClient
 ) : AbstractAccountService<KakaoRegisterParameter, KakaoLoginParameter>() {
     @Transactional
     override suspend fun validateRegister(registerParameter: KakaoRegisterParameter) {
@@ -62,3 +62,14 @@ class KakaoAccountService(
         kakaoUserDomainService.delete(userId)
     }
 }
+
+data class KakaoRegisterParameter(
+    val kakaoId: String,
+    val accessToken: String,
+    override val nickname: String
+) : RegisterParameter(nickname)
+
+data class KakaoLoginParameter(
+    val kakaoId: String,
+    val accessToken: String,
+) : LoginParameter()

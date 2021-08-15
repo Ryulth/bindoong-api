@@ -36,3 +36,9 @@ class KakaoUserDomainService(
 
     private suspend fun deleteByUserId(userId: Long) = kakaoUserRepository.deleteByUserId(userId)
 }
+
+data class KakaoUserCreateParameter(
+    val kakaoId: String,
+    val userId: Long,
+    val lastAccessToken: String
+)

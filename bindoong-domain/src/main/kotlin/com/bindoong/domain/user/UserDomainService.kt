@@ -29,3 +29,9 @@ class UserDomainService(
 
     private suspend fun deleteByUserId(userId: Long) = userRepository.deleteById(userId)
 }
+
+data class UserCreateParameter(
+    val nickName: String,
+    val loginType: LoginType,
+    val roles: Set<Role>
+)

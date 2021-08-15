@@ -58,3 +58,14 @@ class FacebookAccountService(
         facebookUserDomainService.delete(userId)
     }
 }
+
+data class FacebookRegisterParameter(
+    val facebookId: String,
+    val accessToken: String,
+    override val nickname: String
+) : RegisterParameter(nickname)
+
+data class FacebookLoginParameter(
+    val facebookId: String,
+    val accessToken: String,
+) : LoginParameter()

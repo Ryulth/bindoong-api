@@ -30,9 +30,16 @@ class FacebookUserDomainService(
 
     private suspend fun save(facebookUser: FacebookUser): FacebookUser = facebookUserRepository.save(facebookUser)
 
-    private suspend fun findByFacebookId(facebookId: String): FacebookUser? = facebookUserRepository.findById(facebookId)
+    private suspend fun findByFacebookId(facebookId: String): FacebookUser? =
+        facebookUserRepository.findById(facebookId)
 
     private suspend fun findByUserId(userId: Long): FacebookUser? = facebookUserRepository.findByUserId(userId)
 
     private suspend fun deleteByUserId(userId: Long) = facebookUserRepository.deleteByUserId(userId)
 }
+
+data class FacebookUserCreateParameter(
+    val facebookId: String,
+    val userId: Long,
+    val lastAccessToken: String
+)

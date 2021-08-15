@@ -34,3 +34,9 @@ abstract class AbstractAccountService<T : RegisterParameter, S : LoginParameter>
     protected abstract suspend fun isExist(registerParameter: T): Boolean
     protected abstract suspend fun doWithDraw(userId: Long)
 }
+
+sealed class RegisterParameter(
+    open val nickname: String
+)
+
+sealed class LoginParameter

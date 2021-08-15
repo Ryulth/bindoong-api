@@ -1,5 +1,6 @@
 package com.bindoong.web.auth
 
+import com.bindoong.web.security.Token
 import com.bindoong.web.security.UserSessionUtils
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.security.access.prepost.PreAuthorize
@@ -67,5 +68,40 @@ class AuthController(
 
     companion object {
         const val BASE_PATH = "/v1/auth"
+    }
+}
+
+data class FacebookLoginRequest(
+    val facebookId: String,
+    val accessToken: String
+)
+
+data class FacebookRegisterRequest(
+    val facebookId: String,
+    val accessToken: String,
+    val nickname: String,
+)
+
+data class KakaoLoginRequest(
+    val kakaoId: String,
+    val accessToken: String
+)
+
+data class KakaoRegisterRequest(
+    val kakaoId: String,
+    val accessToken: String,
+    val nickname: String,
+)
+
+data class TokenResponse(
+    val accessToken: String,
+    val type: String
+) {
+    companion object {
+        @JvmStatic
+        operator fun invoke(token: Token) = TokenResponse(
+            accessToken = token.accessToken,
+            type = token.type
+        )
     }
 }
