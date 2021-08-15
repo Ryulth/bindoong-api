@@ -42,7 +42,23 @@ function set_options()
     done
 }
 
+function check() {
+    if [ -z "${ACTIVE_PROFILE}" ]; then
+      echo "--active-profile required"
+      exit 1
+    fi
+    if [ -z "${AWS_ACCESS_KEY_ID}" ]; then
+      echo "--aws-access-key-id required"
+      exit 1
+    fi
+    if [ -z "${AWS_SECRET_ACCESS_KEY}" ]; then
+      echo "--aws-secret-access-key required"
+      exit 1
+    fi
+}
+
 set_options "$@"
+check
 
 JAVA_OPTIONS="
   -Djava.security.egd=file:/dev/./urandom \
