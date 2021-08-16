@@ -24,7 +24,7 @@ class AuthApiService(
     }
 
     suspend fun loginKakaoUser(loginRequest: KakaoLoginRequest): TokenResponse {
-        val user = kakaoAccountService.login(loginRequest.toLoginParameter())
+        val user = kakaoAccountService.login(loginParameter = loginRequest.toLoginParameter())
         return TokenResponse(tokenProvider.createToken(user.userId!!))
     }
 
@@ -34,7 +34,7 @@ class AuthApiService(
     }
 
     suspend fun loginFacebookUser(loginRequest: FacebookLoginRequest): TokenResponse {
-        val user = facebookAccountService.login(loginRequest.toLoginParameter())
+        val user = facebookAccountService.login(loginParameter = loginRequest.toLoginParameter())
         return TokenResponse(tokenProvider.createToken(user.userId!!))
     }
 

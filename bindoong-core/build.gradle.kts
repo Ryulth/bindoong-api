@@ -6,4 +6,5 @@ dependencies {
     api(Libs.Jackson.datatypeJsr310)
     api(Libs.Jackson.moduleKotlin)
     api(Libs.Jackson.moduleAfterburner)
+    api(Libs.Apache.commonsCodec)
 }

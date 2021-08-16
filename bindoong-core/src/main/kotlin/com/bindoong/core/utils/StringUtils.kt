@@ -1,5 +1,8 @@
 package com.bindoong.core.utils
 
+import org.apache.commons.codec.binary.Base64
+import java.nio.ByteBuffer
+import java.util.UUID
 import java.util.regex.Pattern
 
 object StringUtils {
@@ -11,5 +14,20 @@ object StringUtils {
         return if (s.isNotEmpty()) {
             EMAIL_PATTERN.matcher(s).matches()
         } else true
+    }
+
+    fun UUID.toBase64String(): String {
+        val uuid = UUID.fromString(this.toString())
+        val bb: ByteBuffer = ByteBuffer.wrap(ByteArray(16))
+        bb.putLong(uuid.mostSignificantBits)
+        bb.putLong(uuid.leastSignificantBits)
+        return Base64.encodeBase64URLSafeString(bb.array())
+    }
+
+    fun String.toBase64Uuid(): UUID {
+        val base64 = Base64()
+        val bytes: ByteArray = base64.decode(this)
+        val bb = ByteBuffer.wrap(bytes)
+        return UUID(bb.long, bb.long)
     }
 }

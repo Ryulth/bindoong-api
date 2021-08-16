@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import mu.KLogging
 import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.http.codec.multipart.FilePart
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestPart
@@ -29,6 +30,7 @@ class ImageController(
         summary = "이미지 업로드",
     )
     @ApiResponse(responseCode = "200", description = "이미지 full url 내려드림")
+    @PreAuthorize("hasRole('BASIC')")
     @PostMapping
     suspend fun uploadImage(
         @RequestPart image: FilePart

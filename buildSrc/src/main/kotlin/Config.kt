@@ -41,6 +41,7 @@ object Libs {
         const val coroutinesJdk8 = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${Versions.kotlinxCoroutines}"
         const val coroutinesReactor = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor:${Versions.kotlinxCoroutines}"
     }
+
     object Spring {
         const val autoconfigure = "org.springframework.boot:spring-boot-autoconfigure"
         const val webflux = "org.springframework.boot:spring-boot-starter-webflux"
@@ -53,6 +54,7 @@ object Libs {
         const val relational = "org.springframework.data:spring-data-relational"
         const val test = "org.springframework.boot:spring-boot-starter-test"
     }
+
     object Jackson {
         const val bom = "com.fasterxml.jackson:jackson-bom:${Versions.jackson}"
         const val annotations = "com.fasterxml.jackson.core:jackson-annotations"
@@ -61,21 +63,32 @@ object Libs {
         const val moduleKotlin = "com.fasterxml.jackson.module:jackson-module-kotlin"
         const val moduleAfterburner = "com.fasterxml.jackson.module:jackson-module-afterburner"
     }
+
+    object UUID {
+        const val generator = "com.fasterxml.uuid:java-uuid-generator:4.0.1"
+    }
+
     object Auth0 {
         const val javaJwt = "com.auth0:java-jwt:${Versions.javaJwt}"
     }
+
     object Google {
         const val guava = "com.google.guava:guava:${Versions.guava}"
     }
+
     object Apache {
         const val commonsIo = "commons-io:commons-io:${Versions.apache}"
+        const val commonsCodec = "commons-codec:commons-codec:1.15"
     }
+
     object SpringFox {
         const val starter = "io.springfox:springfox-boot-starter:${Versions.swagger}"
     }
+
     object Flyway {
         const val core = "org.flywaydb:flyway-core:${Versions.flyway}"
     }
+
     object Aws {
         const val sts = "software.amazon.awssdk:sts:${Versions.aws}"
         const val s3 = "software.amazon.awssdk:s3:${Versions.aws}"
