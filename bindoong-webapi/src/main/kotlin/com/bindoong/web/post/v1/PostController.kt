@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KLogging
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -50,7 +51,7 @@ class PostController(
     )
     @ApiResponse(responseCode = "200", description = "게시물 삭제")
     @PreAuthorize("hasRole('BASIC')")
-    @PutMapping("/{postId}")
+    @DeleteMapping("/{postId}")
     suspend fun deletePost(
         @PathVariable postId: String,
     ) {

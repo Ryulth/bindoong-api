@@ -52,7 +52,7 @@ class JwtTokenProvider(
 
     private fun decodeJWT(token: String): DecodedJWT =
         try {
-            doDecodeJWT(token, rsaPublicKey, rsaPrivateKey)
+            doDecodeJWT(token, rsaPublicKey)
         } catch (e: TokenExpiredException) {
             throw BadCredentialsException("token expired")
         } catch (e: JWTDecodeException) {
@@ -65,10 +65,9 @@ class JwtTokenProvider(
 
     private fun doDecodeJWT(
         token: String,
-        jwtPublicKey: RSAPublicKey,
-        jwtPrivateKey: RSAPrivateKey
+        jwtPublicKey: RSAPublicKey
     ): DecodedJWT =
-        JWT.require(Algorithm.RSA256(jwtPublicKey, jwtPrivateKey))
+        JWT.require(Algorithm.RSA256(jwtPublicKey, null))
             .build()
             .verify(token)
 
