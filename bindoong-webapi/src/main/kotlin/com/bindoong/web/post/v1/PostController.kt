@@ -1,10 +1,10 @@
-package com.bindoong.web.post
+package com.bindoong.web.post.v1
 
 import com.bindoong.domain.post.Post
 import com.bindoong.service.post.PostCreateParameter
 import com.bindoong.service.post.PostService
 import com.bindoong.service.post.PostUpdateParameter
-import com.bindoong.web.auth.UserSessionUtils
+import com.bindoong.web.security.UserSessionUtils
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KLogging

@@ -1,4 +1,4 @@
-package com.bindoong.web.file
+package com.bindoong.web.file.v1
 
 import com.bindoong.service.file.ImageService
 import com.bindoong.service.file.UploadImageParameter

@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class KakaoAccountService(
+class KakaoUserService(
     private val kakaoUserDomainService: KakaoUserDomainService,
     private val userDomainService: UserDomainService,
     private val kakaoClient: KakaoClient
-) : AbstractAccountService<KakaoRegisterParameter, KakaoLoginParameter>() {
+) : AbstractUserService<KakaoRegisterParameter, KakaoLoginParameter>() {
     @Transactional
     override suspend fun validateRegister(registerParameter: KakaoRegisterParameter) {
 //        kakaoApiClient.getUserInfo(registerParameter.accessToken)

@@ -1,8 +1,17 @@
-package com.bindoong.web.auth
+package com.bindoong.web.auth.v1
 
+import com.bindoong.service.user.FacebookLoginParameter
+import com.bindoong.service.user.FacebookRegisterParameter
+import com.bindoong.service.user.FacebookUserService
+import com.bindoong.service.user.KakaoLoginParameter
+import com.bindoong.service.user.KakaoRegisterParameter
+import com.bindoong.service.user.KakaoUserService
+import com.bindoong.service.user.UserService
 import com.bindoong.web.security.Token
+import com.bindoong.web.security.TokenProvider
 import com.bindoong.web.security.UserSessionUtils
 import io.swagger.v3.oas.annotations.Operation
+import mu.KLogging
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,7 +23,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping(AuthController.BASE_PATH)
 class AuthController(
-    private val authApiService: AuthApiService
+    private val tokenProvider: TokenProvider,
+    private val userService: UserService,
+    private val kakaoUserService: KakaoUserService,
+    private val facebookUserService: FacebookUserService,
 ) {
     @Operation(
         operationId = "verifyToken",
@@ -32,7 +44,15 @@ class AuthController(
     )
     @PreAuthorize("hasRole('BASIC')")
     @DeleteMapping
-    suspend fun withdrawUser() = authApiService.withdrawUser(UserSessionUtils.getCurrentUserId())
+    suspend fun withdrawUser() {
+        UserSessionUtils.getCurrentUserId().also { userId ->
+            kakaoUserService.withDraw(userId)
+            facebookUserService.withDraw(userId)
+
+            // 연관 관계가 있을 수 있어서 user 는 마지막에 삭제한다.
+            userService.withDraw(userId)
+        }
+    }
 
     @Operation(
         operationId = "loginWithKakao",
@@ -40,7 +60,8 @@ class AuthController(
     )
     @PostMapping("/login/kakao")
     suspend fun loginWithKakao(@RequestBody loginRequest: KakaoLoginRequest): TokenResponse =
-        authApiService.loginKakaoUser(loginRequest)
+        kakaoUserService.login(loginParameter = loginRequest.toLoginParameter())
+            .run { TokenResponse(tokenProvider.createToken(userId!!)) }
 
     @Operation(
         operationId = "registerWithKakao",
@@ -48,7 +69,8 @@ class AuthController(
     )
     @PostMapping("/register/kakao")
     suspend fun registerWithKakao(@RequestBody registerRequest: KakaoRegisterRequest): TokenResponse =
-        authApiService.registerKakaoUser(registerRequest)
+        kakaoUserService.register(registerParameter = registerRequest.toRegisterParameter())
+            .run { TokenResponse(tokenProvider.createToken(userId!!)) }
 
     @Operation(
         operationId = "loginWithFacebook",
@@ -56,7 +78,8 @@ class AuthController(
     )
     @PostMapping("/login/facebook")
     suspend fun loginWithFacebook(@RequestBody loginRequest: FacebookLoginRequest): TokenResponse =
-        authApiService.loginFacebookUser(loginRequest)
+        facebookUserService.login(loginParameter = loginRequest.toLoginParameter())
+            .run { TokenResponse(tokenProvider.createToken(userId!!)) }
 
     @Operation(
         operationId = "registerWithFacebook",
@@ -64,9 +87,32 @@ class AuthController(
     )
     @PostMapping("/register/facebook")
     suspend fun registerWithFacebook(@RequestBody registerRequest: FacebookRegisterRequest): TokenResponse =
-        authApiService.registerFacebookUser(registerRequest)
+        facebookUserService.register(registerParameter = registerRequest.toRegisterParameter())
+            .run { TokenResponse(tokenProvider.createToken(userId!!)) }
 
-    companion object {
+    private fun KakaoRegisterRequest.toRegisterParameter() = KakaoRegisterParameter(
+        kakaoId = kakaoId,
+        accessToken = accessToken,
+        nickname = nickname
+    )
+
+    private fun KakaoLoginRequest.toLoginParameter() = KakaoLoginParameter(
+        kakaoId = kakaoId,
+        accessToken = accessToken
+    )
+
+    private fun FacebookRegisterRequest.toRegisterParameter() = FacebookRegisterParameter(
+        facebookId = facebookId,
+        accessToken = accessToken,
+        nickname = nickname
+    )
+
+    private fun FacebookLoginRequest.toLoginParameter() = FacebookLoginParameter(
+        facebookId = facebookId,
+        accessToken = accessToken
+    )
+
+    companion object : KLogging() {
         const val BASE_PATH = "/v1/auth"
     }
 }

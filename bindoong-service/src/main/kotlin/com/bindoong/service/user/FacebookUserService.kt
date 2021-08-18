@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class FacebookAccountService(
+class FacebookUserService(
     private val facebookUserDomainService: FacebookUserDomainService,
     private val userDomainService: UserDomainService
-) : AbstractAccountService<FacebookRegisterParameter, FacebookLoginParameter>() {
+) : AbstractUserService<FacebookRegisterParameter, FacebookLoginParameter>() {
     @Transactional
     override suspend fun validateRegister(registerParameter: FacebookRegisterParameter) {
         // TODO 인증

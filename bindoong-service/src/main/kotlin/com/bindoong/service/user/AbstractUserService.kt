@@ -3,7 +3,7 @@ package com.bindoong.service.user
 import com.bindoong.domain.user.User
 import org.springframework.transaction.annotation.Transactional
 
-abstract class AbstractAccountService<T : RegisterParameter, S : LoginParameter> {
+abstract class AbstractUserService<T : RegisterParameter, S : LoginParameter> {
     @Transactional
     open suspend fun register(registerParameter: T): User {
         if (isExist(registerParameter)) {
