@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController
 class ImageController(
     private val imageService: ImageService
 ) {
-
     @Operation(
         operationId = "uploadImage",
         summary = "이미지 업로드",

@@ -1,5 +1,6 @@
 package com.bindoong.infrastructure.client
 
+import com.bindoong.core.utils.StringUtils.toBase64String
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.future.await
 import kotlinx.coroutines.reactor.asFlux
@@ -18,7 +19,7 @@ class S3Client(
 ) {
     suspend fun upload(parameter: UploadParameter): String {
         val ext = FilenameUtils.getExtension(parameter.filename)?.let { ".$it" } ?: ""
-        val key = "${parameter.prefix}/${LocalDate.now().toString().replace("-", "")}/${UUID.randomUUID()}$ext"
+        val key = "${parameter.prefix}/${LocalDate.now().toString().replace("-", "")}/${UUID.randomUUID().toBase64String()}$ext"
         val request = PutObjectRequest.builder()
             .bucket(parameter.bucketName)
             .key(key)

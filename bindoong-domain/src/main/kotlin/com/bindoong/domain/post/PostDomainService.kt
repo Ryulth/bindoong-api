@@ -20,6 +20,16 @@ class PostDomainService(
             )
         )
 
+    @Transactional
+    suspend fun update(parameter: UpdateParameter): Post =
+        this.save(
+            Post(
+                postId = parameter.postId,
+                userId = parameter.userId,
+                imageUrl = parameter.imageUrl
+            )
+        )
+
     @Transactional(readOnly = true)
     suspend fun get(postId: String): Post? = this.findByPostId(postId)
 
@@ -44,5 +54,11 @@ class PostDomainService(
 
 data class CreateParameter(
     val userId: Long,
+    val imageUrl: String
+)
+
+data class UpdateParameter(
+    val userId: Long,
+    val postId: String,
     val imageUrl: String
 )
