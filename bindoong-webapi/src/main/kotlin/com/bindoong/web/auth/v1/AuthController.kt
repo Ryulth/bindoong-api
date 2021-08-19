@@ -29,32 +29,6 @@ class AuthController(
     private val facebookUserService: FacebookUserService,
 ) {
     @Operation(
-        operationId = "verifyToken",
-        summary = "Validate Access Token API",
-        description = "accessToken 을 보내면 status를 반환해주는 API"
-    )
-    @PreAuthorize("hasRole('BASIC')")
-    @GetMapping("/verify")
-    suspend fun verifyToken() = true
-
-    @Operation(
-        operationId = "withdrawUser",
-        summary = "탈퇴 API",
-        description = "accessToken 을 보내면 탈퇴시키는 API"
-    )
-    @PreAuthorize("hasRole('BASIC')")
-    @DeleteMapping
-    suspend fun withdrawUser() {
-        UserSessionUtils.getCurrentUserId().also { userId ->
-            kakaoUserService.withDraw(userId)
-            facebookUserService.withDraw(userId)
-
-            // 연관 관계가 있을 수 있어서 user 는 마지막에 삭제한다.
-            userService.withDraw(userId)
-        }
-    }
-
-    @Operation(
         operationId = "loginWithKakao",
         summary = "Kakao 로그인 API",
     )
@@ -89,6 +63,41 @@ class AuthController(
     suspend fun registerWithFacebook(@RequestBody registerRequest: FacebookRegisterRequest): TokenResponse =
         facebookUserService.register(registerParameter = registerRequest.toRegisterParameter())
             .run { TokenResponse(tokenProvider.createToken(userId!!)) }
+
+    @Operation(
+        operationId = "verifyToken",
+        summary = "Validate Access Token API",
+        description = "accessToken 을 보내면 status를 반환해주는 API"
+    )
+    @PreAuthorize("hasRole('BASIC')")
+    @GetMapping("/verify")
+    suspend fun verifyToken() = true
+
+    @Operation(
+        operationId = "refreshToken",
+        summary = "Refresh Token API",
+        description = "refreshToken 을 보내면 새로운 토큰을 보내주는 API"
+    )
+    @PostMapping("/refresh")
+    suspend fun refreshToken(@RequestBody request: RefreshTokenRequest) =
+        tokenProvider.refreshToken(request.refreshToken)
+
+    @Operation(
+        operationId = "withdrawUser",
+        summary = "탈퇴 API",
+        description = "accessToken 을 보내면 탈퇴시키는 API"
+    )
+    @PreAuthorize("hasRole('BASIC')")
+    @DeleteMapping
+    suspend fun withdrawUser() {
+        UserSessionUtils.getCurrentUserId().also { userId ->
+            kakaoUserService.withDraw(userId)
+            facebookUserService.withDraw(userId)
+
+            // 연관 관계가 있을 수 있어서 user 는 마지막에 삭제한다.
+            userService.withDraw(userId)
+        }
+    }
 
     private fun KakaoRegisterRequest.toRegisterParameter() = KakaoRegisterParameter(
         kakaoId = kakaoId,
@@ -139,15 +148,21 @@ data class KakaoRegisterRequest(
     val nickname: String,
 )
 
+data class RefreshTokenRequest(
+    val refreshToken: String
+)
+
 data class TokenResponse(
     val accessToken: String,
-    val type: String
+    val type: String,
+    val refreshToken: String
 ) {
     companion object {
         @JvmStatic
         operator fun invoke(token: Token) = TokenResponse(
             accessToken = token.accessToken,
-            type = token.type
+            type = token.type,
+            refreshToken = token.refreshToken
         )
     }
 }

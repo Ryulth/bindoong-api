@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service
 @Service
 interface TokenProvider {
     fun createToken(userId: Long): Token
+    fun refreshToken(refreshToken: String): Token
     fun getTokenPrefix(): String
-    fun getAuthentication(token: String): Authentication
+    fun getAuthentication(accessToken: String): Authentication
 }

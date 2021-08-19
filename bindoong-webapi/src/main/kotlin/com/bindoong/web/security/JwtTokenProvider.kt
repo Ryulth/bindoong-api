@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
+import java.nio.charset.StandardCharsets
 import java.security.KeyFactory
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
@@ -26,33 +27,54 @@ import java.util.Date
 class JwtTokenProvider(
     @Value("\${jwt.public-key}") private val publicKey: String,
     @Value("\${jwt.private-key}") private val privateKey: String,
+    @Value("\${jwt.refresh-key}") private val refreshKey: String,
 ) : TokenProvider {
     override fun createToken(userId: Long): Token {
         val accessToken = JWT.create()
             .withPayload(JwtPayload(userId).asMap())
             .withExpiresAt(Date.from(Instant.now().plusSeconds(3600)))
             .sign(Algorithm.RSA256(rsaPublicKey, rsaPrivateKey))
-        // TODO refresh 발급 로직 추가dd
+
+        val refreshToken = JWT.create()
+            .withPayload(JwtPayload(userId).asMap())
+            .withExpiresAt(Date.from(Instant.now().plusSeconds(3600 * 24 * 7)))
+            .sign(Algorithm.HMAC512(hmacRefreshKey))
+
         return Token(
             accessToken = accessToken,
             type = TOKEN_PREFIX,
-            expiresAt = 0,
-            refreshToken = accessToken
+            refreshToken = refreshToken
         )
+    }
+
+    override fun refreshToken(refreshToken: String): Token = decodeRefreshToken(refreshToken).let {
+        createToken(it.claims[CLAIMS_USER_ID]!!.asLong())
     }
 
     override fun getTokenPrefix(): String = TOKEN_PREFIX
 
-    override fun getAuthentication(token: String): Authentication = decodeJWT(token).let {
+    override fun getAuthentication(accessToken: String): Authentication = decodeAccessToken(accessToken).let {
         UserSession(
-            userId = it.claims["userId"]!!.asLong(),
-            token = token
+            userId = it.claims[CLAIMS_USER_ID]!!.asLong(),
+            token = accessToken
         )
     }
 
-    private fun decodeJWT(token: String): DecodedJWT =
+    private fun decodeAccessToken(accessToken: String): DecodedJWT = tryExecute {
+        JWT.require(Algorithm.RSA256(rsaPublicKey, null))
+            .build()
+            .verify(accessToken)
+    }
+
+    private fun decodeRefreshToken(refreshToken: String): DecodedJWT = tryExecute {
+        JWT.require(Algorithm.HMAC512(hmacRefreshKey))
+            .build()
+            .verify(refreshToken)
+    }
+
+    private fun <T : Any> tryExecute(decode: () -> T): T {
         try {
-            doDecodeJWT(token, rsaPublicKey)
+            return decode.invoke()
         } catch (e: TokenExpiredException) {
             throw BadCredentialsException("token expired")
         } catch (e: JWTDecodeException) {
@@ -62,14 +84,7 @@ class JwtTokenProvider(
         } catch (e: Exception) {
             throw BadCredentialsException("error: token is wrong")
         }
-
-    private fun doDecodeJWT(
-        token: String,
-        jwtPublicKey: RSAPublicKey
-    ): DecodedJWT =
-        JWT.require(Algorithm.RSA256(jwtPublicKey, null))
-            .build()
-            .verify(token)
+    }
 
     /**
      * JWT AccessToken 요청 DTO
@@ -84,6 +99,7 @@ class JwtTokenProvider(
 
     private val rsaPrivateKey = createRSAPrivateKey(privateKey)
     private val rsaPublicKey = createRSAPublicKey(publicKey)
+    private val hmacRefreshKey = refreshKey.toByteArray(StandardCharsets.UTF_8)
 
     companion object : KLogging() {
         private const val TOKEN_PREFIX = "Bearer"
@@ -98,5 +114,7 @@ class JwtTokenProvider(
             val x509EncodedKeySpec = X509EncodedKeySpec(Base64.getDecoder().decode(publicKey))
             return keyFactory.generatePublic(x509EncodedKeySpec) as RSAPublicKey
         }
+
+        private const val CLAIMS_USER_ID = "userId"
     }
 }
