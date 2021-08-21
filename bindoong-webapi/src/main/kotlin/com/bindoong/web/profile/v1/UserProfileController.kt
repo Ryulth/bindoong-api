@@ -1,7 +1,7 @@
 package com.bindoong.web.profile.v1
 
 import com.bindoong.service.profile.UserProfileService
-import com.bindoong.web.dto.UserProfileResponse
+import com.bindoong.web.dto.UserProfileDto
 import com.bindoong.web.security.UserSessionUtils
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -22,9 +22,9 @@ class UserProfileController(
     @ApiResponse(responseCode = "200", description = "내 프로필")
     @PreAuthorize("hasRole('BASIC')")
     @GetMapping("/v1/users/me")
-    suspend fun getMyProfile(): UserProfileResponse =
+    suspend fun getMyProfile(): UserProfileDto =
         userProfileService.getUserProfile(UserSessionUtils.getCurrentUserId())
-            .let { UserProfileResponse(it) }
+            .let { UserProfileDto(it) }
 
     @Operation(
         operationId = "getUserProfile",
@@ -35,9 +35,9 @@ class UserProfileController(
     @GetMapping("/v1/users/{userId}")
     suspend fun getUserProfile(
         @PathVariable userId: String
-    ): UserProfileResponse =
+    ): UserProfileDto =
         userProfileService.getUserProfile(userId)
-            .let { UserProfileResponse(it) }
+            .let { UserProfileDto(it) }
 
     companion object : KLogging()
 }

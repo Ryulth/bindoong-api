@@ -4,7 +4,7 @@ import com.bindoong.service.post.PostCreateParameter
 import com.bindoong.service.post.PostService
 import com.bindoong.service.post.PostUpdateParameter
 import com.bindoong.web.dto.PostCreateRequest
-import com.bindoong.web.dto.PostResponse
+import com.bindoong.web.dto.PostDto
 import com.bindoong.web.dto.PostUpdateRequest
 import com.bindoong.web.security.UserSessionUtils
 import io.swagger.v3.oas.annotations.Operation
@@ -32,7 +32,7 @@ class PostController(
     @PostMapping("/v1/posts")
     suspend fun createPost(
         @RequestBody request: PostCreateRequest
-    ): PostResponse = PostResponse(postService.create(request.toParameter(UserSessionUtils.getCurrentUserId())))
+    ): PostDto = PostDto(postService.create(request.toParameter(UserSessionUtils.getCurrentUserId())))
 
     @Operation(
         operationId = "getPost",
@@ -43,7 +43,7 @@ class PostController(
     @GetMapping("/v1/posts/{postId}")
     suspend fun getPost(
         @PathVariable postId: String,
-    ): PostResponse = PostResponse(postService.getOrThrow(postId))
+    ): PostDto = PostDto(postService.getOrThrow(postId))
 
     @Operation(
         operationId = "updatePost",
@@ -55,7 +55,7 @@ class PostController(
     suspend fun updatePost(
         @PathVariable postId: String,
         @RequestBody request: PostUpdateRequest
-    ): PostResponse = PostResponse(postService.update(request.toParameter(UserSessionUtils.getCurrentUserId(), postId)))
+    ): PostDto = PostDto(postService.update(request.toParameter(UserSessionUtils.getCurrentUserId(), postId)))
 
     @Operation(
         operationId = "deletePost",
@@ -63,7 +63,7 @@ class PostController(
     )
     @ApiResponse(responseCode = "200", description = "게시물 삭제")
     @PreAuthorize("hasRole('BASIC')")
-    @DeleteMapping("/{postId}")
+    @DeleteMapping("/v1/posts/{postId}")
     suspend fun deletePost(
         @PathVariable postId: String,
     ) {

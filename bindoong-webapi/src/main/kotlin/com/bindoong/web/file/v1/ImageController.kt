@@ -2,7 +2,7 @@ package com.bindoong.web.file.v1
 
 import com.bindoong.service.file.ImageService
 import com.bindoong.service.file.UploadImageParameter
-import com.bindoong.web.dto.ImageUploadResponse
+import com.bindoong.web.dto.ImageDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +34,7 @@ class ImageController(
     @PostMapping
     suspend fun uploadImage(
         @RequestPart image: FilePart
-    ): ImageUploadResponse = withContext(Dispatchers.IO) {
+    ): ImageDto = withContext(Dispatchers.IO) {
         val content: Flow<DataBuffer> = image.content().asFlow()
         val contentType = image.headers().contentType?.toString()?.takeIf { isImage(it) }
             ?: throw IllegalArgumentException("Illegal image type")
@@ -47,7 +47,7 @@ class ImageController(
                 content = content.map { it.asByteBuffer() }
             )
         )
-        ImageUploadResponse(imageUrl = imageUrl)
+        ImageDto(imageUrl = imageUrl)
     }
 
     companion object : KLogging() {

@@ -1,5 +1,5 @@
 package com.bindoong.web.dto
 
-data class ImageUploadResponse(
+data class ImageDto(
     val imageUrl: String
 )

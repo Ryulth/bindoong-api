@@ -12,7 +12,7 @@ import com.bindoong.web.dto.FacebookRegisterRequest
 import com.bindoong.web.dto.KakaoLoginRequest
 import com.bindoong.web.dto.KakaoRegisterRequest
 import com.bindoong.web.dto.RefreshTokenRequest
-import com.bindoong.web.dto.TokenResponse
+import com.bindoong.web.dto.TokenDto
 import com.bindoong.web.security.TokenProvider
 import com.bindoong.web.security.UserSessionUtils
 import io.swagger.v3.oas.annotations.Operation
@@ -21,11 +21,9 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/v1/auth")
 class AuthController(
     private val tokenProvider: TokenProvider,
     private val userService: UserService,
@@ -36,37 +34,37 @@ class AuthController(
         operationId = "loginWithKakao",
         summary = "Kakao 로그인 API",
     )
-    @PostMapping("/login/kakao")
-    suspend fun loginWithKakao(@RequestBody loginRequest: KakaoLoginRequest): TokenResponse =
+    @PostMapping("/v1/auth/login/kakao")
+    suspend fun loginWithKakao(@RequestBody loginRequest: KakaoLoginRequest): TokenDto =
         kakaoUserService.login(loginParameter = loginRequest.toLoginParameter())
-            .run { TokenResponse(tokenProvider.createToken(userId)) }
+            .run { TokenDto(tokenProvider.createToken(userId)) }
 
     @Operation(
         operationId = "registerWithKakao",
         summary = "Kakao 회원가입 API",
     )
-    @PostMapping("/register/kakao")
-    suspend fun registerWithKakao(@RequestBody registerRequest: KakaoRegisterRequest): TokenResponse =
+    @PostMapping("/v1/auth/register/kakao")
+    suspend fun registerWithKakao(@RequestBody registerRequest: KakaoRegisterRequest): TokenDto =
         kakaoUserService.register(registerParameter = registerRequest.toRegisterParameter())
-            .run { TokenResponse(tokenProvider.createToken(userId)) }
+            .run { TokenDto(tokenProvider.createToken(userId)) }
 
     @Operation(
         operationId = "loginWithFacebook",
         summary = "Facebook 로그인 API",
     )
-    @PostMapping("/login/facebook")
-    suspend fun loginWithFacebook(@RequestBody loginRequest: FacebookLoginRequest): TokenResponse =
+    @PostMapping("/v1/auth/login/facebook")
+    suspend fun loginWithFacebook(@RequestBody loginRequest: FacebookLoginRequest): TokenDto =
         facebookUserService.login(loginParameter = loginRequest.toLoginParameter())
-            .run { TokenResponse(tokenProvider.createToken(userId)) }
+            .run { TokenDto(tokenProvider.createToken(userId)) }
 
     @Operation(
         operationId = "registerWithFacebook",
         summary = "Facebook 회원가입 API",
     )
-    @PostMapping("/register/facebook")
-    suspend fun registerWithFacebook(@RequestBody registerRequest: FacebookRegisterRequest): TokenResponse =
+    @PostMapping("/v1/auth/register/facebook")
+    suspend fun registerWithFacebook(@RequestBody registerRequest: FacebookRegisterRequest): TokenDto =
         facebookUserService.register(registerParameter = registerRequest.toRegisterParameter())
-            .run { TokenResponse(tokenProvider.createToken(userId)) }
+            .run { TokenDto(tokenProvider.createToken(userId)) }
 
     @Operation(
         operationId = "verifyToken",
@@ -74,7 +72,7 @@ class AuthController(
         description = "accessToken 을 보내면 status를 반환해주는 API"
     )
     @PreAuthorize("hasRole('BASIC')")
-    @GetMapping("/verify")
+    @GetMapping("/v1/auth/verify")
     suspend fun verifyToken() = true
 
     @Operation(
@@ -82,7 +80,7 @@ class AuthController(
         summary = "Refresh Token API",
         description = "refreshToken 을 보내면 새로운 토큰을 보내주는 API"
     )
-    @PostMapping("/refresh")
+    @PostMapping("/v1/auth/refresh")
     suspend fun refreshToken(@RequestBody request: RefreshTokenRequest) =
         tokenProvider.refreshToken(request.refreshToken)
 
@@ -92,7 +90,7 @@ class AuthController(
         description = "accessToken 을 보내면 탈퇴시키는 API"
     )
     @PreAuthorize("hasRole('BASIC')")
-    @DeleteMapping
+    @DeleteMapping("/v1/auth")
     suspend fun withdrawUser() {
         UserSessionUtils.getCurrentUserId().also { userId ->
             kakaoUserService.withDraw(userId)

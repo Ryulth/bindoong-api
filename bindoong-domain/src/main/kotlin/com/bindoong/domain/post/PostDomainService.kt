@@ -3,6 +3,7 @@ package com.bindoong.domain.post
 import com.bindoong.core.utils.StringUtils.toBase64String
 import com.fasterxml.uuid.EthernetAddress
 import com.fasterxml.uuid.Generators
+import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -34,7 +35,7 @@ class PostDomainService(
     suspend fun getByPostId(postId: String): Post? = this.findByPostId(postId)
 
     @Transactional(readOnly = true)
-    suspend fun getByUserId(userId: String): Post? = this.findByUserId(userId)
+    suspend fun getAllByUserId(userId: String): Flow<Post> = this.findAllByUserId(userId)
 
     @Transactional
     suspend fun delete(postId: String) = this.deleteByPostId(postId)
@@ -43,7 +44,7 @@ class PostDomainService(
 
     private suspend fun findByPostId(postId: String): Post? = postRepository.findById(postId)
 
-    private suspend fun findByUserId(userId: String): Post? = postRepository.findByUserId(userId)
+    private suspend fun findAllByUserId(userId: String): Flow<Post> = postRepository.findAllByUserId(userId)
 
     private suspend fun deleteByPostId(postId: String) = postRepository.deleteById(postId)
 

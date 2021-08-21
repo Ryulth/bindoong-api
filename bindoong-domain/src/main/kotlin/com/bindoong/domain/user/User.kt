@@ -1,10 +1,12 @@
 package com.bindoong.domain.user
 
 import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.LastModifiedDate
 import java.time.LocalDateTime
 
 data class User(
+    @Id
     val userId: String,
     val nickname: String,
     val loginType: LoginType,

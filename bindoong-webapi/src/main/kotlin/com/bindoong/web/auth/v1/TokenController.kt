@@ -1,6 +1,6 @@
 package com.bindoong.web.auth.v1
 
-import com.bindoong.web.dto.TokenResponse
+import com.bindoong.web.dto.TokenDto
 import com.bindoong.web.security.TokenProvider
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -34,8 +34,8 @@ class TokenController(
             ]
         )
         @RequestBody request: AccessTokenRequest
-    ): TokenResponse =
-        TokenResponse(
+    ): TokenDto =
+        TokenDto(
             tokenProvider.createToken(request.userId)
         )
 
