@@ -1,7 +1,7 @@
 package com.bindoong.web.profile.v1
 
-import com.bindoong.domain.profile.UserProfile
 import com.bindoong.service.profile.UserProfileService
+import com.bindoong.web.dto.UserProfileResponse
 import com.bindoong.web.security.UserSessionUtils
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -40,17 +40,4 @@ class UserProfileController(
             .let { UserProfileResponse(it) }
 
     companion object : KLogging()
-}
-
-data class UserProfileResponse(
-    val userId: String,
-    val nickname: String
-) {
-    companion object {
-        @JvmStatic
-        operator fun invoke(userProfile: UserProfile) = UserProfileResponse(
-            userId = userProfile.userId,
-            nickname = userProfile.nickname
-        )
-    }
 }

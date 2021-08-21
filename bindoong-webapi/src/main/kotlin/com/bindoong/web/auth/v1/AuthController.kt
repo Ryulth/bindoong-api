@@ -7,7 +7,12 @@ import com.bindoong.service.user.KakaoLoginParameter
 import com.bindoong.service.user.KakaoRegisterParameter
 import com.bindoong.service.user.KakaoUserService
 import com.bindoong.service.user.UserService
-import com.bindoong.web.security.Token
+import com.bindoong.web.dto.FacebookLoginRequest
+import com.bindoong.web.dto.FacebookRegisterRequest
+import com.bindoong.web.dto.KakaoLoginRequest
+import com.bindoong.web.dto.KakaoRegisterRequest
+import com.bindoong.web.dto.RefreshTokenRequest
+import com.bindoong.web.dto.TokenResponse
 import com.bindoong.web.security.TokenProvider
 import com.bindoong.web.security.UserSessionUtils
 import io.swagger.v3.oas.annotations.Operation
@@ -34,7 +39,7 @@ class AuthController(
     @PostMapping("/login/kakao")
     suspend fun loginWithKakao(@RequestBody loginRequest: KakaoLoginRequest): TokenResponse =
         kakaoUserService.login(loginParameter = loginRequest.toLoginParameter())
-            .run { TokenResponse(tokenProvider.createToken(userId!!)) }
+            .run { TokenResponse(tokenProvider.createToken(userId)) }
 
     @Operation(
         operationId = "registerWithKakao",
@@ -43,7 +48,7 @@ class AuthController(
     @PostMapping("/register/kakao")
     suspend fun registerWithKakao(@RequestBody registerRequest: KakaoRegisterRequest): TokenResponse =
         kakaoUserService.register(registerParameter = registerRequest.toRegisterParameter())
-            .run { TokenResponse(tokenProvider.createToken(userId!!)) }
+            .run { TokenResponse(tokenProvider.createToken(userId)) }
 
     @Operation(
         operationId = "loginWithFacebook",
@@ -52,7 +57,7 @@ class AuthController(
     @PostMapping("/login/facebook")
     suspend fun loginWithFacebook(@RequestBody loginRequest: FacebookLoginRequest): TokenResponse =
         facebookUserService.login(loginParameter = loginRequest.toLoginParameter())
-            .run { TokenResponse(tokenProvider.createToken(userId!!)) }
+            .run { TokenResponse(tokenProvider.createToken(userId)) }
 
     @Operation(
         operationId = "registerWithFacebook",
@@ -61,7 +66,7 @@ class AuthController(
     @PostMapping("/register/facebook")
     suspend fun registerWithFacebook(@RequestBody registerRequest: FacebookRegisterRequest): TokenResponse =
         facebookUserService.register(registerParameter = registerRequest.toRegisterParameter())
-            .run { TokenResponse(tokenProvider.createToken(userId!!)) }
+            .run { TokenResponse(tokenProvider.createToken(userId)) }
 
     @Operation(
         operationId = "verifyToken",
@@ -119,45 +124,4 @@ class AuthController(
         facebookId = facebookId,
         accessToken = accessToken
     )
-}
-
-data class FacebookLoginRequest(
-    val facebookId: String,
-    val accessToken: String
-)
-
-data class FacebookRegisterRequest(
-    val facebookId: String,
-    val accessToken: String,
-    val nickname: String,
-)
-
-data class KakaoLoginRequest(
-    val kakaoId: String,
-    val accessToken: String
-)
-
-data class KakaoRegisterRequest(
-    val kakaoId: String,
-    val accessToken: String,
-    val nickname: String,
-)
-
-data class RefreshTokenRequest(
-    val refreshToken: String
-)
-
-data class TokenResponse(
-    val accessToken: String,
-    val type: String,
-    val refreshToken: String
-) {
-    companion object {
-        @JvmStatic
-        operator fun invoke(token: Token) = TokenResponse(
-            accessToken = token.accessToken,
-            type = token.type,
-            refreshToken = token.refreshToken
-        )
-    }
 }
