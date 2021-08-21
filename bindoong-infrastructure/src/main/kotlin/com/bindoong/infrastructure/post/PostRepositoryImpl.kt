@@ -27,7 +27,7 @@ class PostRepositoryImpl(
         template.selectOne(Query.query(where(COLUMN_POST_ID).`is`(postId)), Post::class.java).awaitSingleOrNull()
 
     @Transactional
-    override suspend fun findByUserId(userId: Long): Post? =
+    override suspend fun findByUserId(userId: String): Post? =
         template.selectOne(Query.query(where(COLUMN_USER_ID).`is`(userId)), Post::class.java).awaitSingleOrNull()
 
     @Transactional

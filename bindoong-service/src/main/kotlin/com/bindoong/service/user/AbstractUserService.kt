@@ -23,7 +23,7 @@ abstract class AbstractUserService<T : RegisterParameter, S : LoginParameter> {
     }
 
     @Transactional
-    open suspend fun withDraw(userId: Long) {
+    open suspend fun withDraw(userId: String) {
         doWithDraw(userId)
     }
 
@@ -32,7 +32,7 @@ abstract class AbstractUserService<T : RegisterParameter, S : LoginParameter> {
     protected abstract suspend fun doLogin(loginParameter: S): User
     protected abstract suspend fun validateLogin(loginParameter: S)
     protected abstract suspend fun isExist(registerParameter: T): Boolean
-    protected abstract suspend fun doWithDraw(userId: Long)
+    protected abstract suspend fun doWithDraw(userId: String)
 }
 
 sealed class RegisterParameter(

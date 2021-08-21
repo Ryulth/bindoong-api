@@ -4,12 +4,10 @@ import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.LastModifiedDate
 import java.time.LocalDateTime
-import java.util.UUID
 
 data class User(
     @Id
-    val userId: Long? = null,
-    val uuid: String = UUID.randomUUID().toString().replace("-", ""),
+    val userId: String,
     val nickname: String,
     val loginType: LoginType,
     val roles: Role,

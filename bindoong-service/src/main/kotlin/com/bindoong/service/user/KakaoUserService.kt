@@ -58,7 +58,7 @@ class KakaoUserService(
         kakaoUserDomainService.isExist(registerParameter.kakaoId)
 
     @Transactional
-    override suspend fun doWithDraw(userId: Long) {
+    override suspend fun doWithDraw(userId: String) {
         kakaoUserDomainService.delete(userId)
     }
 }

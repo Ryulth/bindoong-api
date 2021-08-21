@@ -33,11 +33,11 @@ class KakaoUserRepositoryImpl(
         template.selectOne(Query.query(where(COLUMN_KAKAO_ID).`is`(kakaoId)), KakaoUser::class.java).awaitSingleOrNull()
 
     @Transactional
-    override suspend fun findByUserId(userId: Long): KakaoUser? =
+    override suspend fun findByUserId(userId: String): KakaoUser? =
         template.selectOne(Query.query(where(COLUMN_USER_ID).`is`(userId)), KakaoUser::class.java).awaitSingleOrNull()
 
     @Transactional
-    override suspend fun deleteByUserId(userId: Long) {
+    override suspend fun deleteByUserId(userId: String) {
         template.delete(Query.query(where(COLUMN_USER_ID).`is`(userId)), User::class.java).awaitSingleOrNull()
     }
 

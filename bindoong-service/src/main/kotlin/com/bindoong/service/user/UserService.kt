@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class UserService(
     private val userDomainService: UserDomainService
 ) {
-    suspend fun getOrThrow(userId: Long): User = userDomainService.get(userId) ?: throw IllegalArgumentException()
+    suspend fun getOrThrow(userId: String): User = userDomainService.get(userId) ?: throw IllegalArgumentException()
 
-    suspend fun withDraw(userId: Long) = userDomainService.delete(userId)
+    suspend fun withDraw(userId: String) = userDomainService.delete(userId)
 }

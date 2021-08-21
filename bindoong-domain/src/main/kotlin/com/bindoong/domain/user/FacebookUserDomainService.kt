@@ -24,7 +24,7 @@ class FacebookUserDomainService(
     suspend fun isExist(facebookId: String): Boolean = this.existsByFacebookId(facebookId)
 
     @Transactional
-    suspend fun delete(userId: Long) = this.deleteByUserId(userId)
+    suspend fun delete(userId: String) = this.deleteByUserId(userId)
 
     private suspend fun existsByFacebookId(facebookId: String): Boolean = facebookUserRepository.existsById(facebookId)
 
@@ -33,13 +33,13 @@ class FacebookUserDomainService(
     private suspend fun findByFacebookId(facebookId: String): FacebookUser? =
         facebookUserRepository.findById(facebookId)
 
-    private suspend fun findByUserId(userId: Long): FacebookUser? = facebookUserRepository.findByUserId(userId)
+    private suspend fun findByUserId(userId: String): FacebookUser? = facebookUserRepository.findByUserId(userId)
 
-    private suspend fun deleteByUserId(userId: Long) = facebookUserRepository.deleteByUserId(userId)
+    private suspend fun deleteByUserId(userId: String) = facebookUserRepository.deleteByUserId(userId)
 }
 
 data class FacebookUserCreateParameter(
     val facebookId: String,
-    val userId: Long,
+    val userId: String,
     val lastAccessToken: String
 )

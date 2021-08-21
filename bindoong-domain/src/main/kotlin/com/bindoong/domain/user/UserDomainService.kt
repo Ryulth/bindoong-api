@@ -1,5 +1,8 @@
 package com.bindoong.domain.user
 
+import com.bindoong.core.utils.StringUtils.toBase64String
+import com.fasterxml.uuid.EthernetAddress
+import com.fasterxml.uuid.Generators
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -9,8 +12,9 @@ class UserDomainService(
 ) {
     @Transactional
     suspend fun create(parameter: UserCreateParameter): User =
-        this.save(
+        this.insert(
             User(
+                userId = generator.generate().toBase64String(),
                 nickname = parameter.nickName,
                 loginType = parameter.loginType,
                 roles = parameter.roles.first()
@@ -18,16 +22,20 @@ class UserDomainService(
         )
 
     @Transactional(readOnly = true)
-    suspend fun get(userId: Long): User? = this.findByUserId(userId)
+    suspend fun get(userId: String): User? = this.findByUserId(userId)
 
     @Transactional
-    suspend fun delete(userId: Long) = this.deleteByUserId(userId)
+    suspend fun delete(userId: String) = this.deleteByUserId(userId)
 
-    private suspend fun save(user: User): User = userRepository.save(user)
+    private suspend fun insert(user: User): User = userRepository.insert(user)
 
-    private suspend fun findByUserId(userId: Long): User? = userRepository.findById(userId)
+    private suspend fun findByUserId(userId: String): User? = userRepository.findById(userId)
 
-    private suspend fun deleteByUserId(userId: Long) = userRepository.deleteById(userId)
+    private suspend fun deleteByUserId(userId: String) = userRepository.deleteById(userId)
+
+    companion object {
+        private val generator = Generators.timeBasedGenerator(EthernetAddress.fromInterface())
+    }
 }
 
 data class UserCreateParameter(

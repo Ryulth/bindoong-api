@@ -15,7 +15,7 @@ class PostService(
             parameter.toParameter()
         )
 
-    suspend fun getOrThrow(postId: String): Post = postDomainService.get(postId) ?: throw IllegalArgumentException()
+    suspend fun getOrThrow(postId: String): Post = postDomainService.getByPostId(postId) ?: throw IllegalArgumentException()
 
     suspend fun update(parameter: PostUpdateParameter): Post =
         getOrThrow(parameter.postId).takeIf { it.userId == parameter.userId }?.let {
@@ -39,12 +39,12 @@ class PostService(
 }
 
 data class PostCreateParameter(
-    val userId: Long,
+    val userId: String,
     val imageUrl: String
 )
 
 data class PostUpdateParameter(
-    val userId: Long,
+    val userId: String,
     val postId: String,
     val imageUrl: String
 )

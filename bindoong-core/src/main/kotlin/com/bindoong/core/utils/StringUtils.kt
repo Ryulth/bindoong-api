@@ -17,10 +17,9 @@ object StringUtils {
     }
 
     fun UUID.toBase64String(): String {
-        val uuid = UUID.fromString(this.toString())
         val bb: ByteBuffer = ByteBuffer.wrap(ByteArray(16))
-        bb.putLong(uuid.mostSignificantBits)
-        bb.putLong(uuid.leastSignificantBits)
+        bb.putLong(this.mostSignificantBits)
+        bb.putLong(this.leastSignificantBits)
         return Base64.encodeBase64URLSafeString(bb.array())
     }
 

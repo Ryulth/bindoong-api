@@ -54,7 +54,7 @@ class FacebookUserService(
         facebookUserDomainService.isExist(registerParameter.facebookId)
 
     @Transactional
-    override suspend fun doWithDraw(userId: Long) {
+    override suspend fun doWithDraw(userId: String) {
         facebookUserDomainService.delete(userId)
     }
 }

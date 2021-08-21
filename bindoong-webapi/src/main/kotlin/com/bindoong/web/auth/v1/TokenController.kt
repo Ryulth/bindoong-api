@@ -40,7 +40,7 @@ class TokenController(
         )
 
     data class AccessTokenRequest(
-        val userId: Long
+        val userId: String
     )
 
     companion object : KLogging() {

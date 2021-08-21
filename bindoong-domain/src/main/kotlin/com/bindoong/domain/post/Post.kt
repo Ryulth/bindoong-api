@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 data class Post(
     @Id
     val postId: String,
-    val userId: Long,
+    val userId: String,
     val imageUrl: String,
     @CreatedDate
     val createdDateTime: LocalDateTime = LocalDateTime.now(),

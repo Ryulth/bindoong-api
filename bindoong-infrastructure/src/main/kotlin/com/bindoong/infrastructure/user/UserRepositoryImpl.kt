@@ -15,24 +15,22 @@ class UserRepositoryImpl(
     private val template: R2dbcEntityTemplate
 ) : UserRepository {
     @Transactional
-    override suspend fun save(user: User): User =
-        if (user.userId?.let { existsById(it) } == true) {
-            template.update(user).awaitSingle()
-        } else {
-            template.insert(user).awaitSingle()
-        }
+    override suspend fun insert(user: User): User = template.insert(user).awaitSingle()
 
     @Transactional
-    override suspend fun existsById(userId: Long): Boolean =
+    override suspend fun update(user: User): User = template.update(user).awaitSingle()
+
+    @Transactional
+    override suspend fun existsById(userId: String): Boolean =
         template.exists(Query.query(where(COLUMN_USER_ID).`is`(userId)), User::class.java).awaitSingleOrNull()
             ?: false
 
     @Transactional
-    override suspend fun findById(userId: Long): User? =
+    override suspend fun findById(userId: String): User? =
         template.selectOne(Query.query(where(COLUMN_USER_ID).`is`(userId)), User::class.java).awaitSingleOrNull()
 
     @Transactional
-    override suspend fun deleteById(userId: Long) {
+    override suspend fun deleteById(userId: String) {
         template.delete(Query.query(where(COLUMN_USER_ID).`is`(userId)), User::class.java).awaitSingleOrNull()
     }
 

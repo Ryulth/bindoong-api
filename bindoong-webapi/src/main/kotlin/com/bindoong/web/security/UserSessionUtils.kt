@@ -7,5 +7,5 @@ object UserSessionUtils {
     suspend fun getCurrentUserSession(): UserSession =
         ReactiveSecurityContextHolder.getContext().awaitFirst().authentication as UserSession
 
-    suspend fun getCurrentUserId(): Long = getCurrentUserSession().userId
+    suspend fun getCurrentUserId(): String = getCurrentUserSession().userId
 }

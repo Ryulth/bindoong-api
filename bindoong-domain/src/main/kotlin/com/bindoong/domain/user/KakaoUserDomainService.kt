@@ -24,7 +24,7 @@ class KakaoUserDomainService(
     suspend fun isExist(kakaoId: String): Boolean = this.existsByKakaoId(kakaoId)
 
     @Transactional
-    suspend fun delete(userId: Long) = this.deleteByUserId(userId)
+    suspend fun delete(userId: String) = this.deleteByUserId(userId)
 
     private suspend fun existsByKakaoId(kakaoId: String): Boolean = kakaoUserRepository.existsById(kakaoId)
 
@@ -32,13 +32,13 @@ class KakaoUserDomainService(
 
     private suspend fun findByKakaoId(kakaoId: String): KakaoUser? = kakaoUserRepository.findById(kakaoId)
 
-    private suspend fun findByUserId(userId: Long): KakaoUser? = kakaoUserRepository.findByUserId(userId)
+    private suspend fun findByUserId(userId: String): KakaoUser? = kakaoUserRepository.findByUserId(userId)
 
-    private suspend fun deleteByUserId(userId: Long) = kakaoUserRepository.deleteByUserId(userId)
+    private suspend fun deleteByUserId(userId: String) = kakaoUserRepository.deleteByUserId(userId)
 }
 
 data class KakaoUserCreateParameter(
     val kakaoId: String,
-    val userId: Long,
+    val userId: String,
     val lastAccessToken: String
 )

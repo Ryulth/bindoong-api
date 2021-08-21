@@ -29,7 +29,7 @@ class JwtTokenProvider(
     @Value("\${jwt.private-key}") private val privateKey: String,
     @Value("\${jwt.refresh-key}") private val refreshKey: String,
 ) : TokenProvider {
-    override fun createToken(userId: Long): Token {
+    override fun createToken(userId: String): Token {
         val accessToken = JWT.create()
             .withPayload(JwtPayload(userId).asMap())
             .withExpiresAt(Date.from(Instant.now().plusSeconds(3600)))
@@ -48,14 +48,14 @@ class JwtTokenProvider(
     }
 
     override fun refreshToken(refreshToken: String): Token = decodeRefreshToken(refreshToken).let {
-        createToken(it.claims[CLAIMS_USER_ID]!!.asLong())
+        createToken(it.claims[CLAIMS_USER_ID]!!.asString())
     }
 
     override fun getTokenPrefix(): String = TOKEN_PREFIX
 
     override fun getAuthentication(accessToken: String): Authentication = decodeAccessToken(accessToken).let {
         UserSession(
-            userId = it.claims[CLAIMS_USER_ID]!!.asLong(),
+            userId = it.claims[CLAIMS_USER_ID]!!.asString(),
             token = accessToken
         )
     }
@@ -92,7 +92,7 @@ class JwtTokenProvider(
      * @property userId Jwt payload 에 들어갈 userId
      */
     private data class JwtPayload(
-        val userId: Long
+        val userId: String
     ) {
         fun asMap(): Map<String, Any> = objectMapper.convertValueAsMap(this)
     }

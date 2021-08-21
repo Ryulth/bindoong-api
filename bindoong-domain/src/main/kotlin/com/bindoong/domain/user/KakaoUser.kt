@@ -5,6 +5,6 @@ import org.springframework.data.annotation.Id
 data class KakaoUser(
     @Id
     val kakaoId: String,
-    val userId: Long,
+    val userId: String,
     var lastAccessToken: String
 )

@@ -58,12 +58,12 @@ class PostController(
         postService.delete(postId)
     }
 
-    private fun PostCreateRequest.toParameter(userId: Long) = PostCreateParameter(
+    private fun PostCreateRequest.toParameter(userId: String) = PostCreateParameter(
         userId = userId,
         imageUrl = imageUrl
     )
 
-    private fun PostUpdateRequest.toParameter(userId: Long, postId: String) = PostUpdateParameter(
+    private fun PostUpdateRequest.toParameter(userId: String, postId: String) = PostUpdateParameter(
         userId = userId,
         postId = postId,
         imageUrl = imageUrl

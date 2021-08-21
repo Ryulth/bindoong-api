@@ -31,10 +31,10 @@ class PostDomainService(
         )
 
     @Transactional(readOnly = true)
-    suspend fun get(postId: String): Post? = this.findByPostId(postId)
+    suspend fun getByPostId(postId: String): Post? = this.findByPostId(postId)
 
     @Transactional(readOnly = true)
-    suspend fun get(userId: Long): Post? = this.findByUserId(userId)
+    suspend fun getByUserId(userId: String): Post? = this.findByUserId(userId)
 
     @Transactional
     suspend fun delete(postId: String) = this.deleteByPostId(postId)
@@ -43,7 +43,7 @@ class PostDomainService(
 
     private suspend fun findByPostId(postId: String): Post? = postRepository.findById(postId)
 
-    private suspend fun findByUserId(userId: Long): Post? = postRepository.findByUserId(userId)
+    private suspend fun findByUserId(userId: String): Post? = postRepository.findByUserId(userId)
 
     private suspend fun deleteByPostId(postId: String) = postRepository.deleteById(postId)
 
@@ -53,12 +53,12 @@ class PostDomainService(
 }
 
 data class CreateParameter(
-    val userId: Long,
+    val userId: String,
     val imageUrl: String
 )
 
 data class UpdateParameter(
-    val userId: Long,
+    val userId: String,
     val postId: String,
     val imageUrl: String
 )

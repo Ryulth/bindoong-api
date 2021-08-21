@@ -5,7 +5,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 data class UserSession(
-    val userId: Long,
+    val userId: String,
     val token: String
 ) : AbstractAuthenticationToken(setOf(SimpleGrantedAuthority("ROLE_BASIC"))) {
 
