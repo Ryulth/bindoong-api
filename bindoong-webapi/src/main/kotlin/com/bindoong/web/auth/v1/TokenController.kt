@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import mu.KLogging
 import org.springframework.context.annotation.Profile
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Profile("!prod")
-@RequestMapping(TokenController.BASE_PATH)
+@RequestMapping("/v1/token")
 class TokenController(
     private val tokenProvider: TokenProvider
 ) {
@@ -42,8 +41,4 @@ class TokenController(
     data class AccessTokenRequest(
         val userId: String
     )
-
-    companion object : KLogging() {
-        const val BASE_PATH = "/v1/token"
-    }
 }

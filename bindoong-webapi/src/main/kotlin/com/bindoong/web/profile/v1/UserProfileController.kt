@@ -1,0 +1,56 @@
+package com.bindoong.web.profile.v1
+
+import com.bindoong.domain.profile.UserProfile
+import com.bindoong.service.profile.UserProfileService
+import com.bindoong.web.security.UserSessionUtils
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import mu.KLogging
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RestController
+
+@RestController
+class UserProfileController(
+    private val userProfileService: UserProfileService
+) {
+    @Operation(
+        operationId = "getMyProfile",
+        summary = "내 프로필",
+    )
+    @ApiResponse(responseCode = "200", description = "내 프로필")
+    @PreAuthorize("hasRole('BASIC')")
+    @GetMapping("/v1/users/me")
+    suspend fun getMyProfile(): UserProfileResponse =
+        userProfileService.getUserProfile(UserSessionUtils.getCurrentUserId())
+            .let { UserProfileResponse(it) }
+
+    @Operation(
+        operationId = "getUserProfile",
+        summary = "유저 프로필",
+    )
+    @ApiResponse(responseCode = "200", description = "유저 프로필")
+    @PreAuthorize("hasRole('BASIC')")
+    @GetMapping("/v1/users/{userId}")
+    suspend fun getUserProfile(
+        @PathVariable userId: String
+    ): UserProfileResponse =
+        userProfileService.getUserProfile(userId)
+            .let { UserProfileResponse(it) }
+
+    companion object : KLogging()
+}
+
+data class UserProfileResponse(
+    val userId: String,
+    val nickname: String
+) {
+    companion object {
+        @JvmStatic
+        operator fun invoke(userProfile: UserProfile) = UserProfileResponse(
+            userId = userProfile.userId,
+            nickname = userProfile.nickname
+        )
+    }
+}

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping(ImageController.BASE_PATH)
+@RequestMapping("/v1/files/images")
 class ImageController(
     private val imageService: ImageService
 ) {
@@ -50,7 +50,6 @@ class ImageController(
     }
 
     companion object : KLogging() {
-        const val BASE_PATH = "/v1/files/images"
         private const val TYPE_IMAGE = "image"
         private val isImage = { contentType: String -> contentType.split("/")[0] == TYPE_IMAGE }
     }

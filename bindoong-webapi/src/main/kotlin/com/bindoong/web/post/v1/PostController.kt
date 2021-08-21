@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping(PostController.BASE_PATH)
+@RequestMapping("/v1/posts")
 class PostController(
     private val postService: PostService
 ) {
@@ -69,9 +69,7 @@ class PostController(
         imageUrl = imageUrl
     )
 
-    companion object : KLogging() {
-        const val BASE_PATH = "/v1/posts"
-    }
+    companion object : KLogging()
 }
 
 data class PostCreateRequest(

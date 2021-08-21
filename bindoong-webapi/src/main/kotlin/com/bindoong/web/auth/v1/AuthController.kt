@@ -11,7 +11,6 @@ import com.bindoong.web.security.Token
 import com.bindoong.web.security.TokenProvider
 import com.bindoong.web.security.UserSessionUtils
 import io.swagger.v3.oas.annotations.Operation
-import mu.KLogging
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping(AuthController.BASE_PATH)
+@RequestMapping("/v1/auth")
 class AuthController(
     private val tokenProvider: TokenProvider,
     private val userService: UserService,
@@ -120,10 +119,6 @@ class AuthController(
         facebookId = facebookId,
         accessToken = accessToken
     )
-
-    companion object : KLogging() {
-        const val BASE_PATH = "/v1/auth"
-    }
 }
 
 data class FacebookLoginRequest(
