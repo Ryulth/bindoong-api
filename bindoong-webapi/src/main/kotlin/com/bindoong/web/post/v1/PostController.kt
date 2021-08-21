@@ -70,7 +70,7 @@ class PostController(
     )
 
     companion object : KLogging() {
-        const val BASE_PATH = "/v1/post"
+        const val BASE_PATH = "/v1/posts"
     }
 }
 

@@ -50,7 +50,7 @@ class ImageController(
     }
 
     companion object : KLogging() {
-        const val BASE_PATH = "/v1/file/images"
+        const val BASE_PATH = "/v1/files/images"
         private const val TYPE_IMAGE = "image"
         private val isImage = { contentType: String -> contentType.split("/")[0] == TYPE_IMAGE }
     }
