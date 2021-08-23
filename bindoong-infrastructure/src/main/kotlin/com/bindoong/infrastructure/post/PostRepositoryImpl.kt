@@ -1,11 +1,14 @@
 package com.bindoong.infrastructure.post
 
+import com.bindoong.domain.Cursor
+import com.bindoong.domain.Cursorable
 import com.bindoong.domain.post.Post
 import com.bindoong.domain.post.PostRepository
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
+import org.springframework.data.domain.Sort
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.data.relational.core.query.Criteria.where
 import org.springframework.data.relational.core.query.Query
@@ -29,8 +32,25 @@ class PostRepositoryImpl(
         template.selectOne(Query.query(where(COLUMN_POST_ID).`is`(postId)), Post::class.java).awaitSingleOrNull()
 
     @Transactional
-    override suspend fun findAllByUserId(userId: String): Flow<Post> =
-        template.select(Query.query(where(COLUMN_USER_ID).`is`(userId)), Post::class.java).asFlow()
+    override suspend fun findAllByUserId(userId: String, cursorable: Cursorable): Cursor<Post> =
+        template.select(
+            Query.query(
+                where(COLUMN_USER_ID).`is`(userId).let {
+                    cursorable.cursor?.let { cursor ->
+                        it.and(where(COLUMN_POST_ID).lessThan(cursor))
+                    } ?: it
+                }
+            )
+                .sort(Sort.by(Sort.Direction.DESC, COLUMN_POST_ID))
+                .limit(cursorable.size),
+            Post::class.java
+        ).asFlow().let {
+            Cursor(
+                content = it,
+                current = cursorable.cursor,
+                next = it.last().postId
+            )
+        }
 
     @Transactional
     override suspend fun deleteById(postId: String) {

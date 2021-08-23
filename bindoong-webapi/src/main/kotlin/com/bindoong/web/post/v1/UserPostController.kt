@@ -1,5 +1,6 @@
 package com.bindoong.web.post.v1
 
+import com.bindoong.domain.Cursorable
 import com.bindoong.service.post.PostService
 import com.bindoong.web.dto.PostDto
 import com.bindoong.web.security.UserSessionUtils
@@ -24,7 +25,8 @@ class UserPostController(
     @ApiResponse(responseCode = "200", description = "게시물 생성")
     @PreAuthorize("hasRole('BASIC')")
     @GetMapping("/v1/users/me/posts")
-    suspend fun getMyPosts(): Flow<PostDto> = postService.getAll(UserSessionUtils.getCurrentUserId()).map { PostDto(it) }
+    suspend fun getMyPosts(cursorable: Cursorable): Flow<PostDto> =
+        postService.getAll(UserSessionUtils.getCurrentUserId(), cursorable).content.map { PostDto(it) }
 
     @Operation(
         operationId = "getUserPosts",
@@ -34,8 +36,10 @@ class UserPostController(
     @PreAuthorize("hasRole('BASIC')")
     @GetMapping("/v1/users/{userId}/posts")
     suspend fun getUserPosts(
-        @PathVariable userId: String
-    ): Flow<PostDto> = postService.getAll(userId).map { PostDto(it) }
+        @PathVariable userId: String,
+        cursorable: Cursorable
+
+    ): Flow<PostDto> = postService.getAll(userId, cursorable).content.map { PostDto(it) }
 
     companion object : KLogging()
 }

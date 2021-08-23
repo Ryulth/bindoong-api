@@ -1,10 +1,11 @@
 package com.bindoong.service.post
 
+import com.bindoong.domain.Cursor
+import com.bindoong.domain.Cursorable
 import com.bindoong.domain.post.CreateParameter
 import com.bindoong.domain.post.Post
 import com.bindoong.domain.post.PostDomainService
 import com.bindoong.domain.post.UpdateParameter
-import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,7 +19,7 @@ class PostService(
 
     suspend fun getOrThrow(postId: String): Post = postDomainService.getByPostId(postId) ?: throw IllegalArgumentException()
 
-    suspend fun getAll(userId: String): Flow<Post> = postDomainService.getAllByUserId(userId)
+    suspend fun getAll(userId: String, cursorable: Cursorable): Cursor<Post> = postDomainService.getAllByUserId(userId, cursorable)
 
     suspend fun update(parameter: PostUpdateParameter): Post =
         getOrThrow(parameter.postId).takeIf { it.userId == parameter.userId }?.let {

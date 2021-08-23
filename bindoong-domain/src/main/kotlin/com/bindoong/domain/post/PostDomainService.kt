@@ -1,9 +1,10 @@
 package com.bindoong.domain.post
 
-import com.bindoong.core.utils.StringUtils.toBase64String
+import com.bindoong.domain.Cursor
+import com.bindoong.domain.Cursorable
 import com.fasterxml.uuid.EthernetAddress
 import com.fasterxml.uuid.Generators
-import kotlinx.coroutines.flow.Flow
+import com.github.f4b6a3.ulid.UlidCreator
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -15,7 +16,7 @@ class PostDomainService(
     suspend fun create(parameter: CreateParameter): Post =
         this.save(
             Post(
-                postId = generator.generate().toBase64String(),
+                postId = UlidCreator.getUlid().toString(),
                 userId = parameter.userId,
                 imageUrl = parameter.imageUrl
             )
@@ -35,7 +36,7 @@ class PostDomainService(
     suspend fun getByPostId(postId: String): Post? = this.findByPostId(postId)
 
     @Transactional(readOnly = true)
-    suspend fun getAllByUserId(userId: String): Flow<Post> = this.findAllByUserId(userId)
+    suspend fun getAllByUserId(userId: String, cursorable: Cursorable): Cursor<Post> = this.findAllByUserId(userId, cursorable)
 
     @Transactional
     suspend fun delete(postId: String) = this.deleteByPostId(postId)
@@ -44,7 +45,8 @@ class PostDomainService(
 
     private suspend fun findByPostId(postId: String): Post? = postRepository.findById(postId)
 
-    private suspend fun findAllByUserId(userId: String): Flow<Post> = postRepository.findAllByUserId(userId)
+    private suspend fun findAllByUserId(userId: String, cursorable: Cursorable): Cursor<Post> =
+        postRepository.findAllByUserId(userId, cursorable)
 
     private suspend fun deleteByPostId(postId: String) = postRepository.deleteById(postId)
 
