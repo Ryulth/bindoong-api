@@ -44,12 +44,12 @@ subprojects {
     }
 
     dependencies {
-        api(Libs.Kotlin.stdlibJdk8)
-        api(Libs.Kotlin.reflect)
-        api(Libs.Kotlin.coroutinesCore)
-        api(Libs.Kotlin.coroutinesJdk8)
-        api(Libs.Kotlin.coroutinesReactor)
-        api(Libs.Kotlin.logging)
+        implementation(Libs.Kotlin.stdlibJdk8)
+        implementation(Libs.Kotlin.reflect)
+        implementation(Libs.Kotlin.coroutinesCore)
+        implementation(Libs.Kotlin.coroutinesJdk8)
+        implementation(Libs.Kotlin.coroutinesReactor)
+        implementation(Libs.Kotlin.logging)
     }
 
     tasks {

@@ -1,8 +1,8 @@
 dependencies {
     api(project(":bindoong-core"))
 
-    api(Libs.Spring.autoconfigure)
-    api(Libs.Spring.relational)
-    api(Libs.Generator.uuid)
-    api(Libs.Generator.ulid)
+    implementation(Libs.Spring.autoconfigure)
+    implementation(Libs.Spring.relational)
+    implementation(Libs.Generator.uuid)
+    implementation(Libs.Generator.ulid)
 }

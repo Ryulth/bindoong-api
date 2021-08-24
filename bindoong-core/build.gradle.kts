@@ -1,10 +1,10 @@
 dependencies {
-    api(Libs.Google.guava)
-    api(Libs.Jackson.bom)
-    api(Libs.Jackson.annotations)
-    api(Libs.Jackson.datatypeJdk8)
-    api(Libs.Jackson.datatypeJsr310)
-    api(Libs.Jackson.moduleKotlin)
-    api(Libs.Jackson.moduleAfterburner)
-    api(Libs.Apache.commonsCodec)
+    implementation(Libs.Google.guava)
+    implementation(Libs.Jackson.bom)
+    implementation(Libs.Jackson.annotations)
+    implementation(Libs.Jackson.datatypeJdk8)
+    implementation(Libs.Jackson.datatypeJsr310)
+    implementation(Libs.Jackson.moduleKotlin)
+    implementation(Libs.Jackson.moduleAfterburner)
+    implementation(Libs.Apache.commonsCodec)
 }

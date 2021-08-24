@@ -47,7 +47,6 @@ object Libs {
         const val webflux = "org.springframework.boot:spring-boot-starter-webflux"
         const val actuator = "org.springframework.boot:spring-boot-starter-actuator"
         const val security = "org.springframework.boot:spring-boot-starter-security"
-        const val data = "org.springframework.data:spring-data-commons"
         const val r2dbc = "org.springframework.boot:spring-boot-starter-data-r2dbc"
         const val r2dbcMysql = "dev.miku:r2dbc-mysql:${Versions.r2dbcMysql}"
         const val jdbcMysql = "mysql:mysql-connector-java:${Versions.jdbcMysql}"

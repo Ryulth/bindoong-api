@@ -7,20 +7,25 @@ import com.bindoong.domain.post.Post
 import com.bindoong.domain.post.PostDomainService
 import com.bindoong.domain.post.UpdateParameter
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PostService(
     private val postDomainService: PostDomainService
 ) {
+    @Transactional
     suspend fun create(parameter: PostCreateParameter): Post =
         postDomainService.create(
             parameter.toParameter()
         )
 
+    @Transactional
     suspend fun getOrThrow(postId: String): Post = postDomainService.getByPostId(postId) ?: throw IllegalArgumentException()
 
+    @Transactional
     suspend fun getAll(userId: String, cursorRequest: CursorRequest): CursorPage<Post> = postDomainService.getAllByUserId(userId, cursorRequest)
 
+    @Transactional
     suspend fun update(parameter: PostUpdateParameter): Post =
         getOrThrow(parameter.postId).takeIf { it.userId == parameter.userId }?.let {
             postDomainService.update(
@@ -28,6 +33,7 @@ class PostService(
             )
         } ?: throw IllegalArgumentException("Not my post")
 
+    @Transactional
     suspend fun delete(postId: String) = postDomainService.delete(postId)
 
     private fun PostCreateParameter.toParameter() = CreateParameter(

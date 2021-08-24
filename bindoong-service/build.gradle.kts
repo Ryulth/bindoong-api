@@ -3,5 +3,6 @@ dependencies {
     api(project(":bindoong-domain"))
     api(project(":bindoong-infrastructure"))
 
-    api(Libs.Spring.autoconfigure)
+    implementation(Libs.Spring.autoconfigure)
+    implementation(Libs.Spring.relational)
 }
