@@ -12,7 +12,7 @@ class PostDomainService(
 ) {
     @Transactional
     suspend fun create(parameter: CreateParameter): Post =
-        this.save(
+        this.insert(
             Post(
                 postId = UlidCreator.getUlid().toString(),
                 userId = parameter.userId,
@@ -22,7 +22,7 @@ class PostDomainService(
 
     @Transactional
     suspend fun update(parameter: UpdateParameter): Post =
-        this.save(
+        this.update(
             Post(
                 postId = parameter.postId,
                 userId = parameter.userId,
@@ -39,7 +39,9 @@ class PostDomainService(
     @Transactional
     suspend fun delete(postId: String) = this.deleteByPostId(postId)
 
-    private suspend fun save(post: Post): Post = postRepository.save(post)
+    private suspend fun insert(post: Post): Post = postRepository.insert(post)
+
+    private suspend fun update(post: Post): Post = postRepository.update(post)
 
     private suspend fun findByPostId(postId: String): Post? = postRepository.findById(postId)
 

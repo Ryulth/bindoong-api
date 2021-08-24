@@ -16,12 +16,10 @@ class KakaoUserRepositoryImpl(
     private val template: R2dbcEntityTemplate
 ) : KakaoUserRepository {
     @Transactional
-    override suspend fun save(kakaoUser: KakaoUser): KakaoUser =
-        if (existsById(kakaoUser.kakaoId)) {
-            template.update(kakaoUser).awaitSingle()
-        } else {
-            template.insert(kakaoUser).awaitSingle()
-        }
+    override suspend fun insert(kakaoUser: KakaoUser): KakaoUser = template.insert(kakaoUser).awaitSingle()
+
+    @Transactional
+    override suspend fun update(kakaoUser: KakaoUser): KakaoUser = template.update(kakaoUser).awaitSingle()
 
     @Transactional
     override suspend fun existsById(kakaoId: String): Boolean =

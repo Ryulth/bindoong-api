@@ -9,7 +9,7 @@ class KakaoUserDomainService(
 ) {
     @Transactional
     suspend fun create(parameter: KakaoUserCreateParameter): KakaoUser =
-        this.save(
+        this.insert(
             KakaoUser(
                 kakaoId = parameter.kakaoId,
                 lastAccessToken = parameter.lastAccessToken,
@@ -28,7 +28,7 @@ class KakaoUserDomainService(
 
     private suspend fun existsByKakaoId(kakaoId: String): Boolean = kakaoUserRepository.existsById(kakaoId)
 
-    private suspend fun save(kakaoUser: KakaoUser): KakaoUser = kakaoUserRepository.save(kakaoUser)
+    private suspend fun insert(kakaoUser: KakaoUser): KakaoUser = kakaoUserRepository.insert(kakaoUser)
 
     private suspend fun findByKakaoId(kakaoId: String): KakaoUser? = kakaoUserRepository.findById(kakaoId)
 

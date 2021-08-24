@@ -16,12 +16,10 @@ class FacebookUserRepositoryImpl(
     private val template: R2dbcEntityTemplate
 ) : FacebookUserRepository {
     @Transactional
-    override suspend fun save(facebookUser: FacebookUser): FacebookUser =
-        if (existsById(facebookUser.facebookId)) {
-            template.update(facebookUser).awaitSingle()
-        } else {
-            template.insert(facebookUser).awaitSingle()
-        }
+    override suspend fun insert(facebookUser: FacebookUser): FacebookUser = template.insert(facebookUser).awaitSingle()
+
+    @Transactional
+    override suspend fun update(facebookUser: FacebookUser): FacebookUser = template.update(facebookUser).awaitSingle()
 
     @Transactional
     override suspend fun existsById(facebookId: String): Boolean =

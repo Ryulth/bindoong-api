@@ -20,12 +20,10 @@ class PostRepositoryImpl(
     private val template: R2dbcEntityTemplate
 ) : PostRepository {
     @Transactional
-    override suspend fun save(post: Post): Post =
-        if (existsById(post.postId)) {
-            template.update(post).awaitSingle()
-        } else {
-            template.insert(post).awaitSingle()
-        }
+    override suspend fun insert(post: Post): Post = template.insert(post).awaitSingle()
+
+    @Transactional
+    override suspend fun update(post: Post): Post = template.update(post).awaitSingle()
 
     @Transactional
     override suspend fun findById(postId: String): Post? =

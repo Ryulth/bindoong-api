@@ -9,7 +9,7 @@ class FacebookUserDomainService(
 ) {
     @Transactional
     suspend fun create(parameter: FacebookUserCreateParameter): FacebookUser =
-        this.save(
+        this.insert(
             FacebookUser(
                 facebookId = parameter.facebookId,
                 lastAccessToken = parameter.lastAccessToken,
@@ -28,7 +28,7 @@ class FacebookUserDomainService(
 
     private suspend fun existsByFacebookId(facebookId: String): Boolean = facebookUserRepository.existsById(facebookId)
 
-    private suspend fun save(facebookUser: FacebookUser): FacebookUser = facebookUserRepository.save(facebookUser)
+    private suspend fun insert(facebookUser: FacebookUser): FacebookUser = facebookUserRepository.insert(facebookUser)
 
     private suspend fun findByFacebookId(facebookId: String): FacebookUser? =
         facebookUserRepository.findById(facebookId)
