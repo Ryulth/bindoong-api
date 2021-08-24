@@ -4,7 +4,7 @@ import com.bindoong.domain.Cursor
 import com.bindoong.domain.Cursorable
 import com.bindoong.domain.post.Post
 import com.bindoong.domain.post.PostRepository
-import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
@@ -47,8 +47,8 @@ class PostRepositoryImpl(
         ).asFlow().let {
             Cursor(
                 content = it,
-                current = cursorable.cursor,
-                next = it.last().postId
+                currentCursor = cursorable.cursor,
+                nextCursor = it.lastOrNull()?.postId
             )
         }
 
