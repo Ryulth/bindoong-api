@@ -23,9 +23,9 @@ class UserPostController(
 ) {
     @Operation(
         operationId = "getMyPosts",
-        summary = "게시물 생성",
+        summary = "내 게시물 리스트 페이징",
     )
-    @ApiResponse(responseCode = "200", description = "게시물 생성")
+    @ApiResponse(responseCode = "200", description = "내 게시물 리스트 페이징")
     @PreAuthorize("hasRole('BASIC')")
     @GetMapping("/v1/users/me/posts")
     suspend fun getMyPosts(cursorable: Cursorable): CursorDto<PostDto> =
@@ -33,9 +33,9 @@ class UserPostController(
 
     @Operation(
         operationId = "getUserPosts",
-        summary = "게시물 생성",
+        summary = "유저 게시물 리스트 페이징",
     )
-    @ApiResponse(responseCode = "200", description = "게시물 생성")
+    @ApiResponse(responseCode = "200", description = "유저 게시물 리스트 페이징")
     @PreAuthorize("hasRole('BASIC')")
     @GetMapping("/v1/users/{userId}/posts")
     suspend fun getUserPosts(

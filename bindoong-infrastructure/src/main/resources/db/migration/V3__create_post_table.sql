@@ -5,5 +5,6 @@ CREATE TABLE `post` (
     `created_date_time`     DATETIME        NOT NULL,
     `updated_date_time`     DATETIME        NOT NULL,
     PRIMARY KEY (`post_id`),
-    INDEX `IDX_user_id` (`user_id`)
+    INDEX `IDX_user_id` (`user_id`),
+    INDEX `IDX_post_id_user_id` (`post_id`, `user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
