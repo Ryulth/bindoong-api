@@ -2,8 +2,6 @@ package com.bindoong.domain.post
 
 import com.bindoong.domain.CursorPage
 import com.bindoong.domain.CursorRequest
-import com.fasterxml.uuid.EthernetAddress
-import com.fasterxml.uuid.Generators
 import com.github.f4b6a3.ulid.UlidCreator
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -49,10 +47,6 @@ class PostDomainService(
         postRepository.findAllByUserId(userId, cursorRequest)
 
     private suspend fun deleteByPostId(postId: String) = postRepository.deleteById(postId)
-
-    companion object {
-        private val generator = Generators.timeBasedGenerator(EthernetAddress.fromInterface())
-    }
 }
 
 data class CreateParameter(

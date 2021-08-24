@@ -1,8 +1,7 @@
 package com.bindoong.domain.user
 
 import com.bindoong.core.utils.StringUtils.toBase64String
-import com.fasterxml.uuid.EthernetAddress
-import com.fasterxml.uuid.Generators
+import com.github.f4b6a3.uuid.UuidCreator
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -14,7 +13,7 @@ class UserDomainService(
     suspend fun create(parameter: UserCreateParameter): User =
         this.insert(
             User(
-                userId = generator.generate().toBase64String(),
+                userId = UuidCreator.getRandomBased().toBase64String(),
                 nickname = parameter.nickName,
                 loginType = parameter.loginType,
                 roles = parameter.roles.first()
@@ -32,10 +31,6 @@ class UserDomainService(
     private suspend fun findByUserId(userId: String): User? = userRepository.findById(userId)
 
     private suspend fun deleteByUserId(userId: String) = userRepository.deleteById(userId)
-
-    companion object {
-        private val generator = Generators.timeBasedGenerator(EthernetAddress.fromInterface())
-    }
 }
 
 data class UserCreateParameter(

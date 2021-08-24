@@ -3,6 +3,6 @@ dependencies {
 
     api(Libs.Spring.autoconfigure)
     api(Libs.Spring.relational)
-    api(Libs.UUID.generator)
-    implementation("com.github.f4b6a3:ulid-creator:4.0.0")
+    api(Libs.Generator.uuid)
+    api(Libs.Generator.ulid)
 }

@@ -64,8 +64,9 @@ object Libs {
         const val moduleAfterburner = "com.fasterxml.jackson.module:jackson-module-afterburner"
     }
 
-    object UUID {
-        const val generator = "com.fasterxml.uuid:java-uuid-generator:4.0.1"
+    object Generator {
+        const val uuid = "com.github.f4b6a3:uuid-creator:4.0.0"
+        const val ulid = "com.github.f4b6a3:ulid-creator:4.0.0"
     }
 
     object Auth0 {

@@ -1,7 +1,7 @@
 package com.bindoong.infrastructure.client
 
 import com.bindoong.core.utils.StringUtils.toBase64String
-import com.fasterxml.uuid.Generators
+import com.github.f4b6a3.uuid.UuidCreator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.future.await
 import kotlinx.coroutines.reactor.asFlux
@@ -19,7 +19,7 @@ class S3Client(
 ) {
     suspend fun upload(parameter: UploadParameter): String {
         val ext = FilenameUtils.getExtension(parameter.filename)?.let { ".$it" } ?: ""
-        val key = "${parameter.prefix}/${LocalDate.now().toString().replace("-", "")}/${generator.generate().toBase64String()}$ext"
+        val key = "${parameter.prefix}/${LocalDate.now().toString().replace("-", "")}/${UuidCreator.getRandomBased().toBase64String()}$ext"
         val request = PutObjectRequest.builder()
             .bucket(parameter.bucketName)
             .key(key)
@@ -28,10 +28,6 @@ class S3Client(
             .build()
         client.putObject(request, AsyncRequestBody.fromPublisher(parameter.content.asFlux())).await()
         return key
-    }
-
-    companion object {
-        private val generator = Generators.randomBasedGenerator()
     }
 }
 

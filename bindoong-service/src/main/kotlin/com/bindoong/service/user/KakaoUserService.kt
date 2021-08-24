@@ -36,7 +36,7 @@ class KakaoUserService(
                 KakaoUserCreateParameter(
                     kakaoId = registerParameter.kakaoId,
                     lastAccessToken = registerParameter.accessToken,
-                    userId = it.userId!!
+                    userId = it.userId
                 )
             )
         }

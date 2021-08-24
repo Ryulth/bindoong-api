@@ -33,7 +33,7 @@ class FacebookUserService(
                 FacebookUserCreateParameter(
                     facebookId = registerParameter.facebookId,
                     lastAccessToken = registerParameter.accessToken,
-                    userId = it.userId!!
+                    userId = it.userId
                 )
             )
         }
