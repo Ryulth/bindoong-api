@@ -1,7 +1,7 @@
 package com.bindoong.infrastructure.post
 
-import com.bindoong.domain.Cursor
-import com.bindoong.domain.Cursorable
+import com.bindoong.domain.CursorPage
+import com.bindoong.domain.CursorRequest
 import com.bindoong.domain.post.Post
 import com.bindoong.domain.post.PostRepository
 import kotlinx.coroutines.flow.lastOrNull
@@ -32,23 +32,25 @@ class PostRepositoryImpl(
         template.selectOne(Query.query(where(COLUMN_POST_ID).`is`(postId)), Post::class.java).awaitSingleOrNull()
 
     @Transactional
-    override suspend fun findAllByUserId(userId: String, cursorable: Cursorable): Cursor<Post> =
+    override suspend fun findAllByUserId(userId: String, cursorRequest: CursorRequest): CursorPage<Post> =
         template.select(
             Query.query(
                 where(COLUMN_USER_ID).`is`(userId).let {
-                    cursorable.cursor?.let { cursor ->
+                    cursorRequest.cursor?.let { cursor ->
                         it.and(where(COLUMN_POST_ID).lessThan(cursor))
                     } ?: it
                 }
             )
                 .sort(Sort.by(Sort.Direction.DESC, COLUMN_POST_ID))
-                .limit(cursorable.size),
+                .limit(cursorRequest.size),
             Post::class.java
         ).asFlow().let {
-            Cursor(
+            CursorPage(
                 content = it,
-                currentCursor = cursorable.cursor,
-                nextCursor = it.lastOrNull()?.postId
+                CursorPage.Cursor(
+                    current = cursorRequest.cursor,
+                    next = it.lastOrNull()?.postId
+                )
             )
         }
 

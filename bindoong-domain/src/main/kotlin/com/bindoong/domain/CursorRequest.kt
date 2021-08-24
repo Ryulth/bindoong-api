@@ -1,6 +1,6 @@
 package com.bindoong.domain
 
-data class Cursorable(
+data class CursorRequest(
     val cursor: String?,
     val size: Int = 10
 )

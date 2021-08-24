@@ -1,7 +1,7 @@
 package com.bindoong.service.post
 
-import com.bindoong.domain.Cursor
-import com.bindoong.domain.Cursorable
+import com.bindoong.domain.CursorPage
+import com.bindoong.domain.CursorRequest
 import com.bindoong.domain.post.CreateParameter
 import com.bindoong.domain.post.Post
 import com.bindoong.domain.post.PostDomainService
@@ -19,7 +19,7 @@ class PostService(
 
     suspend fun getOrThrow(postId: String): Post = postDomainService.getByPostId(postId) ?: throw IllegalArgumentException()
 
-    suspend fun getAll(userId: String, cursorable: Cursorable): Cursor<Post> = postDomainService.getAllByUserId(userId, cursorable)
+    suspend fun getAll(userId: String, cursorRequest: CursorRequest): CursorPage<Post> = postDomainService.getAllByUserId(userId, cursorRequest)
 
     suspend fun update(parameter: PostUpdateParameter): Post =
         getOrThrow(parameter.postId).takeIf { it.userId == parameter.userId }?.let {
