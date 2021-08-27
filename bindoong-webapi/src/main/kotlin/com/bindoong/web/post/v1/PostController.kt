@@ -7,8 +7,7 @@ import com.bindoong.web.dto.PostCreateRequest
 import com.bindoong.web.dto.PostDto
 import com.bindoong.web.dto.PostUpdateRequest
 import com.bindoong.web.security.UserSessionUtils
-import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.annotations.ApiOperation
 import mu.KLogging
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -23,33 +22,33 @@ import org.springframework.web.bind.annotation.RestController
 class PostController(
     private val postService: PostService
 ) {
-    @Operation(
-        operationId = "createPost",
-        summary = "게시물 생성",
+    @ApiOperation(
+        nickname = "createPost",
+        value = "게시물 생성",
+        response = PostDto::class
     )
-    @ApiResponse(responseCode = "200", description = "게시물 생성")
     @PreAuthorize("hasRole('BASIC')")
     @PostMapping("/v1/posts")
     suspend fun createPost(
         @RequestBody request: PostCreateRequest
     ): PostDto = PostDto(postService.create(request.toParameter(UserSessionUtils.getCurrentUserId())))
 
-    @Operation(
-        operationId = "getPost",
-        summary = "게시물 가져오기",
+    @ApiOperation(
+        nickname = "getPost",
+        value = "게시물 가져오기",
+        response = PostDto::class
     )
-    @ApiResponse(responseCode = "200", description = "게시물 가져오기")
     @PreAuthorize("hasRole('BASIC')")
     @GetMapping("/v1/posts/{postId}")
     suspend fun getPost(
         @PathVariable postId: String,
     ): PostDto = PostDto(postService.getOrThrow(postId))
 
-    @Operation(
-        operationId = "updatePost",
-        summary = "게시물 수정",
+    @ApiOperation(
+        nickname = "updatePost",
+        value = "게시물 수정",
+        response = PostDto::class
     )
-    @ApiResponse(responseCode = "200", description = "게시물 수정")
     @PreAuthorize("hasRole('BASIC')")
     @PutMapping("/v1/posts/{postId}")
     suspend fun updatePost(
@@ -57,11 +56,11 @@ class PostController(
         @RequestBody request: PostUpdateRequest
     ): PostDto = PostDto(postService.update(request.toParameter(UserSessionUtils.getCurrentUserId(), postId)))
 
-    @Operation(
-        operationId = "deletePost",
-        summary = "게시물 삭제",
+    @ApiOperation(
+        nickname = "deletePost",
+        value = "게시물 삭제",
+        response = Nothing::class
     )
-    @ApiResponse(responseCode = "200", description = "게시물 삭제")
     @PreAuthorize("hasRole('BASIC')")
     @DeleteMapping("/v1/posts/{postId}")
     suspend fun deletePost(

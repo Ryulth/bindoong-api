@@ -25,7 +25,6 @@ object Versions {
     const val javaJwt = "3.15.0"
     const val r2dbcMysql = "0.8.1.RELEASE"
     const val jdbcMysql = "8.0.26"
-    const val swagger = "3.0.0"
     const val guava = "30.1.1-jre"
     const val jackson = "2.12.4"
     const val aws = "2.17.19"
@@ -82,7 +81,10 @@ object Libs {
     }
 
     object SpringFox {
-        const val starter = "io.springfox:springfox-boot-starter:${Versions.swagger}"
+        const val starter = "io.springfox:springfox-boot-starter:3.0.0"
+        const val swagger2 = "io.springfox:springfox-swagger2:2.10.5"
+        const val ui = "io.springfox:springfox-swagger-ui:2.10.5"
+        const val webflux = "io.springfox:springfox-spring-webflux:2.10.5"
     }
 
     object Flyway {

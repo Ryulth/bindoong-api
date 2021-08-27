@@ -3,8 +3,8 @@ package com.bindoong.web.file.v1
 import com.bindoong.service.file.ImageService
 import com.bindoong.service.file.UploadImageParameter
 import com.bindoong.web.dto.ImageDto
-import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.annotations.ApiImplicitParam
+import io.swagger.annotations.ApiOperation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,11 +25,12 @@ import org.springframework.web.bind.annotation.RestController
 class ImageController(
     private val imageService: ImageService
 ) {
-    @Operation(
-        operationId = "uploadImage",
-        summary = "이미지 업로드",
+    @ApiOperation(
+        nickname = "uploadImage",
+        value = "이미지 업로드",
+        response = ImageDto::class,
     )
-    @ApiResponse(responseCode = "200", description = "이미지 full url 내려드림")
+    @ApiImplicitParam(name = "image", dataType = "__file", paramType="form", required = true)
     @PreAuthorize("hasRole('BASIC')")
     @PostMapping
     suspend fun uploadImage(

@@ -1,10 +1,12 @@
-package com.bindoong.web.error
+package com.bindoong.web.dto
 
 import com.bindoong.core.utils.JsonUtils.convertValueAsMap
 import com.bindoong.core.utils.JsonUtils.objectMapper
+import io.swagger.annotations.ApiModel
 import java.util.Date
 
-data class WebErrorAttribute(
+
+data class ErrorAttribute(
     val timestamp: Date,
     val path: String,
     val status: Int,

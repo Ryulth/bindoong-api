@@ -1,5 +1,6 @@
 package com.bindoong.web.error
 
+import com.bindoong.web.dto.ErrorAttribute
 import mu.KLogging
 import org.springframework.boot.web.error.ErrorAttributeOptions
 import org.springframework.boot.web.reactive.error.DefaultErrorAttributes
@@ -12,7 +13,7 @@ import java.util.Date
 class WebErrorAttributes : DefaultErrorAttributes() {
     override fun getErrorAttributes(request: ServerRequest, options: ErrorAttributeOptions): Map<String, Any> =
         getException(request).let { exception ->
-            WebErrorAttribute(
+            ErrorAttribute(
                 timestamp = Date(),
                 path = request.path(),
                 status = getStatusCode(exception),
