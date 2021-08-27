@@ -6,7 +6,6 @@ import com.bindoong.web.dto.CursorPageDto
 import com.bindoong.web.dto.PostDto
 import com.bindoong.web.dto.toPostDto
 import com.bindoong.web.security.UserSessionUtils
-import com.fasterxml.jackson.core.type.TypeReference
 import io.swagger.annotations.ApiOperation
 import mu.KLogging
 import org.springframework.security.access.prepost.PreAuthorize

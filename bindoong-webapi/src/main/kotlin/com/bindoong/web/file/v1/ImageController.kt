@@ -30,7 +30,7 @@ class ImageController(
         value = "이미지 업로드",
         response = ImageDto::class,
     )
-    @ApiImplicitParam(name = "image", dataType = "__file", paramType="form", required = true)
+    @ApiImplicitParam(name = "image", dataType = "__file", paramType = "form", required = true)
     @PreAuthorize("hasRole('BASIC')")
     @PostMapping
     suspend fun uploadImage(

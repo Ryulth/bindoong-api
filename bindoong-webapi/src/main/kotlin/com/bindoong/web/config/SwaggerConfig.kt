@@ -1,14 +1,11 @@
 package com.bindoong.web.config
 
-import com.bindoong.web.dto.FacebookLoginRequest
-import com.bindoong.web.dto.ImageDto
 import com.fasterxml.classmate.TypeResolver
 import io.swagger.annotations.ApiOperation
 import mu.KLogging
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
-import org.springframework.http.codec.multipart.FilePart
 import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.service.ApiInfo
@@ -48,6 +45,5 @@ class SwaggerConfig {
 
     companion object : KLogging() {
         val typeResolver = TypeResolver()
-
     }
 }

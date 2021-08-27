@@ -2,9 +2,7 @@ package com.bindoong.web.dto
 
 import com.bindoong.core.utils.JsonUtils.convertValueAsMap
 import com.bindoong.core.utils.JsonUtils.objectMapper
-import io.swagger.annotations.ApiModel
 import java.util.Date
-
 
 data class ErrorAttribute(
     val timestamp: Date,
