@@ -5,6 +5,10 @@ import com.bindoong.service.file.UploadImageParameter
 import com.bindoong.web.dto.ImageDto
 import io.swagger.annotations.ApiImplicitParam
 import io.swagger.annotations.ApiOperation
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -30,6 +34,20 @@ class ImageController(
         value = "이미지 업로드",
         response = ImageDto::class,
     )
+    @Operation(
+        operationId = "uploadImage",
+        summary = "이미지 업로드",
+        responses = [
+            ApiResponse(
+                content = [
+                    Content(
+                        schema = Schema(implementation = ImageDto::class)
+                    )
+                ]
+            )
+        ]
+    )
+
     @ApiImplicitParam(name = "image", dataType = "__file", paramType = "form", required = true)
     @PreAuthorize("hasRole('BASIC')")
     @PostMapping

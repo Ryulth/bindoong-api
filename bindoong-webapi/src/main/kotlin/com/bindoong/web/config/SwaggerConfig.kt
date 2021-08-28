@@ -1,7 +1,9 @@
 package com.bindoong.web.config
 
+import com.bindoong.web.dto.ErrorResponse
 import com.fasterxml.classmate.TypeResolver
 import io.swagger.annotations.ApiOperation
+import io.swagger.v3.oas.annotations.Operation
 import mu.KLogging
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,16 +20,17 @@ import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux
 
 @Configuration
-@EnableSwagger2WebFlux
 class SwaggerConfig {
     @Bean
     fun api(): Docket =
-        Docket(DocumentationType.SWAGGER_2)
+        Docket(DocumentationType.OAS_30)
             .apiInfo(apiInfo)
             .securityContexts(listOf(securityContext))
             .securitySchemes(listOf(apiKey))
+            .additionalModels(typeResolver.resolve(ErrorResponse::class.java))
             .select()
-            .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation::class.java))
+            .apis(RequestHandlerSelectors.withMethodAnnotation(Operation::class.java))
+
             .build()
 
     private val securityContext =
