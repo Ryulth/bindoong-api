@@ -7,4 +7,5 @@ dependencies {
     implementation(Libs.Jackson.moduleKotlin)
     implementation(Libs.Jackson.moduleAfterburner)
     implementation(Libs.Apache.commonsCodec)
+    implementation("com.google.code.gson:gson:2.8.8")
 }
