@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct
 class Application {
     @PostConstruct
     fun init() {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"))
     }
 }
 

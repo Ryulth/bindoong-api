@@ -6,6 +6,7 @@ import com.bindoong.domain.post.CreateParameter
 import com.bindoong.domain.post.Post
 import com.bindoong.domain.post.PostDomainService
 import com.bindoong.domain.post.UpdateParameter
+import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -20,10 +21,16 @@ class PostService(
         )
 
     @Transactional
-    suspend fun getOrThrow(postId: String): Post = postDomainService.getByPostId(postId) ?: throw IllegalArgumentException()
+    suspend fun getOrThrow(postId: String): Post =
+        postDomainService.getByPostId(postId) ?: throw IllegalArgumentException()
 
     @Transactional
-    suspend fun getAll(userId: String, cursorRequest: CursorRequest): CursorPage<Post> = postDomainService.getAllByUserId(userId, cursorRequest)
+    suspend fun getAll(userId: String, cursorRequest: CursorRequest): CursorPage<Post> =
+        postDomainService.getAllByUserId(userId, cursorRequest)
+
+    @Transactional
+    suspend fun getRandomExcludeUserId(userId: String): Flow<Post> =
+        postDomainService.getAllByRandomExcludeUserId(5, userId)
 
     @Transactional
     suspend fun update(parameter: PostUpdateParameter): Post =

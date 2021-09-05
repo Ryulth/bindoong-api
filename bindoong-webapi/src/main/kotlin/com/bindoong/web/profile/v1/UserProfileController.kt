@@ -1,15 +1,18 @@
 package com.bindoong.web.profile.v1
 
 import com.bindoong.service.profile.UserProfileService
+import com.bindoong.web.config.SwaggerConfig
 import com.bindoong.web.dto.UserProfileDto
 import com.bindoong.web.security.UserSessionUtils
 import io.swagger.annotations.ApiOperation
+import io.swagger.v3.oas.annotations.tags.Tag
 import mu.KLogging
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
+@Tag(name = SwaggerConfig.ApiTag.PROFILE)
 @RestController
 class UserProfileController(
     private val userProfileService: UserProfileService
@@ -17,7 +20,8 @@ class UserProfileController(
     @ApiOperation(
         nickname = "getMyProfile",
         value = "내 프로필",
-        response = UserProfileDto::class
+        response = UserProfileDto::class,
+        tags = [SwaggerConfig.ApiTag.PROFILE]
     )
     @PreAuthorize("hasRole('BASIC')")
     @GetMapping("/v1/users/me")
@@ -28,7 +32,8 @@ class UserProfileController(
     @ApiOperation(
         nickname = "getUserProfile",
         value = "유저 프로필",
-        response = UserProfileDto::class
+        response = UserProfileDto::class,
+        tags = [SwaggerConfig.ApiTag.PROFILE]
     )
     @PreAuthorize("hasRole('BASIC')")
     @GetMapping("/v1/users/{userId}")

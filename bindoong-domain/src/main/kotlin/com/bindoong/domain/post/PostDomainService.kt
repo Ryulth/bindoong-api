@@ -3,6 +3,7 @@ package com.bindoong.domain.post
 import com.bindoong.domain.CursorPage
 import com.bindoong.domain.CursorRequest
 import com.github.f4b6a3.ulid.UlidCreator
+import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -34,10 +35,15 @@ class PostDomainService(
     suspend fun getByPostId(postId: String): Post? = this.findByPostId(postId)
 
     @Transactional(readOnly = true)
-    suspend fun getAllByUserId(userId: String, cursorRequest: CursorRequest): CursorPage<Post> = this.findAllByUserId(userId, cursorRequest)
+    suspend fun getAllByUserId(userId: String, cursorRequest: CursorRequest): CursorPage<Post> =
+        this.findAllByUserId(userId, cursorRequest)
 
     @Transactional
     suspend fun delete(postId: String) = this.deleteByPostId(postId)
+
+    @Transactional
+    suspend fun getAllByRandomExcludeUserId(size: Int, userId: String): Flow<Post> =
+        this.findAllByRandomAndUserIdNot(size, userId)
 
     private suspend fun insert(post: Post): Post = postRepository.insert(post)
 
@@ -49,6 +55,9 @@ class PostDomainService(
         postRepository.findAllByUserId(userId, cursorRequest)
 
     private suspend fun deleteByPostId(postId: String) = postRepository.deleteById(postId)
+
+    private suspend fun findAllByRandomAndUserIdNot(size: Int, userId: String): Flow<Post> =
+        postRepository.findAllByRandomAndUserIdNot(size, userId)
 }
 
 data class CreateParameter(

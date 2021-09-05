@@ -4,6 +4,8 @@ import com.bindoong.domain.CursorPage
 import com.bindoong.domain.CursorRequest
 import com.bindoong.domain.post.Post
 import com.bindoong.domain.post.PostRepository
+import io.r2dbc.spi.Row
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactor.awaitSingle
@@ -14,6 +16,7 @@ import org.springframework.data.relational.core.query.Criteria.where
 import org.springframework.data.relational.core.query.Query
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Component
 class PostRepositoryImpl(
@@ -62,8 +65,31 @@ class PostRepositoryImpl(
         template.exists(Query.query(where(COLUMN_POST_ID).`is`(postId)), Post::class.java).awaitSingleOrNull()
             ?: false
 
+    @Transactional
+    override suspend fun findAllByRandomAndUserIdNot(size: Int, userId: String): Flow<Post> =
+        template.databaseClient.sql(
+            """
+            SELECT * FROM post AS p1 JOIN 
+                (SELECT post_id FROM post WHERE post.user_id != '$userId' ORDER BY RAND() LIMIT $size)
+            as p2 ON p1.post_id=p2.post_id;
+            """.trimIndent()
+        ).map { t, u ->
+            t.toModel()
+        }.all().asFlow()
+
+    private fun Row.toModel() = Post(
+        postId = this.get(COLUMN_POST_ID, String::class.java)!!,
+        userId = this.get(COLUMN_USER_ID, String::class.java)!!,
+        imageUrl = this.get(COLUMN_IMAGE_URL, String::class.java)!!,
+        createdDateTime = this.get(COLUMN_CREATED_DATE_TIME, LocalDateTime::class.java)!!,
+        updatedDateTime = this.get(COLUMN_UPDATED_DATE_TIME, LocalDateTime::class.java)!!,
+    )
+
     companion object {
         private const val COLUMN_POST_ID = "post_id"
         private const val COLUMN_USER_ID = "user_id"
+        private const val COLUMN_IMAGE_URL = "image_url"
+        private const val COLUMN_CREATED_DATE_TIME = "created_date_time"
+        private const val COLUMN_UPDATED_DATE_TIME = "updated_date_time"
     }
 }

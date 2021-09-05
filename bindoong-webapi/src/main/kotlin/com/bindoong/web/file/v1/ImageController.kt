@@ -2,9 +2,11 @@ package com.bindoong.web.file.v1
 
 import com.bindoong.service.file.ImageService
 import com.bindoong.service.file.UploadImageParameter
+import com.bindoong.web.config.SwaggerConfig
 import com.bindoong.web.dto.ImageDto
 import io.swagger.annotations.ApiImplicitParam
 import io.swagger.annotations.ApiOperation
+import io.swagger.v3.oas.annotations.tags.Tag
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -16,12 +18,11 @@ import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.http.codec.multipart.FilePart
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 
+@Tag(name = SwaggerConfig.ApiTag.FILE)
 @RestController
-@RequestMapping("/v1/files/images")
 class ImageController(
     private val imageService: ImageService
 ) {
@@ -29,10 +30,11 @@ class ImageController(
         nickname = "uploadImage",
         value = "이미지 업로드",
         response = ImageDto::class,
+        tags = [SwaggerConfig.ApiTag.FILE]
     )
     @ApiImplicitParam(name = "image", dataType = "__file", paramType = "form", required = true)
     @PreAuthorize("hasRole('BASIC')")
-    @PostMapping
+    @PostMapping("/v1/files/images")
     suspend fun uploadImage(
         @RequestPart image: FilePart
     ): ImageDto = withContext(Dispatchers.IO) {
@@ -52,6 +54,7 @@ class ImageController(
     }
 
     companion object : KLogging() {
+
         private const val TYPE_IMAGE = "image"
         private val isImage = { contentType: String -> contentType.split("/")[0] == TYPE_IMAGE }
     }

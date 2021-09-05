@@ -63,6 +63,15 @@ class SwaggerConfig {
             ResponseMessageBuilder().code(404).message("NotFound").responseModel(errorModel).build()
         )
 
+    class ApiTag {
+        companion object {
+            const val AUTH = "Auth"
+            const val FILE = "File"
+            const val POST = "Post"
+            const val PROFILE = "Profile"
+        }
+    }
+
     companion object : KLogging() {
         val errorModel = ModelRef("ErrorResponse")
         val typeResolver = TypeResolver()

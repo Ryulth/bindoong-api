@@ -3,11 +3,15 @@ package com.bindoong.web.post.v1
 import com.bindoong.service.post.PostCreateParameter
 import com.bindoong.service.post.PostService
 import com.bindoong.service.post.PostUpdateParameter
+import com.bindoong.web.config.SwaggerConfig
 import com.bindoong.web.dto.PostCreateRequest
 import com.bindoong.web.dto.PostDto
 import com.bindoong.web.dto.PostUpdateRequest
 import com.bindoong.web.security.UserSessionUtils
 import io.swagger.annotations.ApiOperation
+import io.swagger.v3.oas.annotations.tags.Tag
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import mu.KLogging
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -17,7 +21,9 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import kotlin.reflect.KClass
 
+@Tag(name = SwaggerConfig.ApiTag.POST)
 @RestController
 class PostController(
     private val postService: PostService
@@ -25,7 +31,8 @@ class PostController(
     @ApiOperation(
         nickname = "createPost",
         value = "게시물 생성",
-        response = PostDto::class
+        response = PostDto::class,
+        tags = [SwaggerConfig.ApiTag.POST]
     )
     @PreAuthorize("hasRole('BASIC')")
     @PostMapping("/v1/posts")
@@ -36,7 +43,8 @@ class PostController(
     @ApiOperation(
         nickname = "getPost",
         value = "게시물 가져오기",
-        response = PostDto::class
+        response = PostDto::class,
+        tags = [SwaggerConfig.ApiTag.POST]
     )
     @PreAuthorize("hasRole('BASIC')")
     @GetMapping("/v1/posts/{postId}")
@@ -47,7 +55,8 @@ class PostController(
     @ApiOperation(
         nickname = "updatePost",
         value = "게시물 수정",
-        response = PostDto::class
+        response = PostDto::class,
+        tags = [SwaggerConfig.ApiTag.POST]
     )
     @PreAuthorize("hasRole('BASIC')")
     @PutMapping("/v1/posts/{postId}")
@@ -59,7 +68,8 @@ class PostController(
     @ApiOperation(
         nickname = "deletePost",
         value = "게시물 삭제",
-        response = Nothing::class
+        response = Nothing::class,
+        tags = [SwaggerConfig.ApiTag.POST]
     )
     @PreAuthorize("hasRole('BASIC')")
     @DeleteMapping("/v1/posts/{postId}")
@@ -68,6 +78,18 @@ class PostController(
     ) {
         postService.delete(postId)
     }
+
+    @ApiOperation(
+        nickname = "getRandomPost",
+        value = "랜덤 게시물",
+        response = Array<PostDto>::class,
+        tags = [SwaggerConfig.ApiTag.POST]
+    )
+    @PreAuthorize("hasRole('BASIC')")
+    @GetMapping("/v1/posts/random")
+    suspend fun randomPost(): Flow<PostDto> =
+        postService.getRandomExcludeUserId(userId = UserSessionUtils.getCurrentUserId())
+            .map { PostDto(it) }
 
     private fun PostCreateRequest.toParameter(userId: String) = PostCreateParameter(
         userId = userId,
@@ -79,6 +101,6 @@ class PostController(
         postId = postId,
         imageUrl = imageUrl
     )
-
+    fun <T : Any> test(t: T): KClass<out T> = t::class
     companion object : KLogging()
 }
