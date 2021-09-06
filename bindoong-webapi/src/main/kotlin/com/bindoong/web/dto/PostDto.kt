@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 
 data class PostDto(
     val postId: String,
+    val userId: String,
     val imageUrl: String,
     val createDateTime: LocalDateTime
 ) {
@@ -12,6 +13,7 @@ data class PostDto(
         @JvmStatic
         operator fun invoke(post: Post) = PostDto(
             postId = post.postId,
+            userId = post.userId,
             imageUrl = post.imageUrl,
             createDateTime = post.createdDateTime
         )

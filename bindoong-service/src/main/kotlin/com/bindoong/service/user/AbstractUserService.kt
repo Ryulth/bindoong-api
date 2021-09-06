@@ -1,5 +1,6 @@
 package com.bindoong.service.user
 
+import com.bindoong.core.exceptions.UserAlreadyExistException
 import com.bindoong.domain.user.User
 import org.springframework.transaction.annotation.Transactional
 

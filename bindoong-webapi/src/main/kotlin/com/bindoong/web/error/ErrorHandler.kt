@@ -1,8 +1,9 @@
 package com.bindoong.web.error
 
+import com.bindoong.core.exceptions.UserAlreadyExistException
+import com.bindoong.core.exceptions.UserNotAllowedException
+import com.bindoong.core.exceptions.UserNotFoundException
 import com.bindoong.core.utils.JsonUtils.asJson
-import com.bindoong.service.user.UserAlreadyExistException
-import com.bindoong.service.user.UserNotFoundException
 import com.bindoong.web.dto.ErrorResponse
 import mu.KLogging
 import org.springframework.core.annotation.Order
@@ -22,11 +23,9 @@ class ErrorHandler : WebExceptionHandler {
             timestamp = LocalDateTime.now().toString(),
             path = exchange.request.path.toString(),
             code = code,
-            exception = exception.javaClass.simpleName,
             message = exception.message ?: ""
         )
         exchange.response.statusCode = httpStatus
-
         val buffer = exchange.response.bufferFactory().wrap(errorResponse.asJson().toByteArray())
         logger.error(exception) { "error response : $errorResponse" }
         return exchange.response.writeWith(Mono.just(buffer))
@@ -41,6 +40,8 @@ class ErrorHandler : WebExceptionHandler {
             Pair(ErrorResponse.ERROR_CODE_ACCOUNT_NOT_EXIST, HttpStatus.BAD_REQUEST)
         UserAlreadyExistException::class ->
             Pair(ErrorResponse.ERROR_CODE_ACCOUNT_DUPLICATED, HttpStatus.BAD_REQUEST)
+        UserNotAllowedException::class ->
+            Pair(ErrorResponse.ERROR_CODE_ACCOUNT_NOT_ALLOWED, HttpStatus.FORBIDDEN)
         else ->
             Pair(ErrorResponse.ERROR_CODE_SERVER_INTERNAL_ERROR, HttpStatus.INTERNAL_SERVER_ERROR)
     }

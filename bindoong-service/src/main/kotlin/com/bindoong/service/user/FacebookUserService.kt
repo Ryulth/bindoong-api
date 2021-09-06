@@ -1,5 +1,6 @@
 package com.bindoong.service.user
 
+import com.bindoong.core.exceptions.UserNotFoundException
 import com.bindoong.domain.user.FacebookUserCreateParameter
 import com.bindoong.domain.user.FacebookUserDomainService
 import com.bindoong.domain.user.LoginType

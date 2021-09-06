@@ -1,8 +1,8 @@
 package com.bindoong.service.profile
 
+import com.bindoong.core.exceptions.UserNotFoundException
 import com.bindoong.domain.profile.UserProfile
 import com.bindoong.domain.profile.UserProfileDomainService
-import com.bindoong.service.user.UserNotFoundException
 import org.springframework.stereotype.Service
 
 @Service

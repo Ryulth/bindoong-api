@@ -12,8 +12,6 @@ data class ErrorResponse(
     @ApiModelProperty(value = ERROR_DESCRIPTION)
     val code: Int,
     @ApiModelProperty
-    val exception: String,
-    @ApiModelProperty
     val message: String
 ) {
     companion object {
@@ -22,6 +20,7 @@ data class ErrorResponse(
         const val ERROR_CODE_GENERAL_UNAUTHORIZED: Int = 1002
         const val ERROR_CODE_ACCOUNT_NOT_EXIST: Int = 2001
         const val ERROR_CODE_ACCOUNT_DUPLICATED: Int = 2002
+        const val ERROR_CODE_ACCOUNT_NOT_ALLOWED: Int = 2003
         const val ERROR_DESCRIPTION = "See https://www.notion.so/yhaejoooo/Error-codes-0257d9d0354c45399394c3c937a354ea"
     }
 }

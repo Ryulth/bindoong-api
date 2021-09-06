@@ -1,5 +1,6 @@
 package com.bindoong.service.user
 
+import com.bindoong.core.exceptions.UserNotFoundException
 import com.bindoong.domain.user.KakaoUserCreateParameter
 import com.bindoong.domain.user.KakaoUserDomainService
 import com.bindoong.domain.user.LoginType

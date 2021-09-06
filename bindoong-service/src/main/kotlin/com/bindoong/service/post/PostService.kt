@@ -1,5 +1,6 @@
 package com.bindoong.service.post
 
+import com.bindoong.core.exceptions.UserNotAllowedException
 import com.bindoong.domain.CursorPage
 import com.bindoong.domain.CursorRequest
 import com.bindoong.domain.post.CreateParameter
@@ -29,7 +30,7 @@ class PostService(
         postDomainService.getAllByUserId(userId, cursorRequest)
 
     @Transactional
-    suspend fun getRandomExcludeUserId(userId: String): Flow<Post> =
+    suspend fun getRandom(userId: String): Flow<Post> =
         postDomainService.getAllByRandomExcludeUserId(5, userId)
 
     @Transactional
@@ -38,7 +39,7 @@ class PostService(
             postDomainService.update(
                 parameter.toParameter()
             )
-        } ?: throw IllegalArgumentException("Not my post")
+        } ?: throw UserNotAllowedException("Not my post")
 
     @Transactional
     suspend fun delete(postId: String) = postDomainService.delete(postId)

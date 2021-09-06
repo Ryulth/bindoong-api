@@ -88,7 +88,7 @@ class PostController(
     @PreAuthorize("hasRole('BASIC')")
     @GetMapping("/v1/posts/random")
     suspend fun randomPost(): Flow<PostDto> =
-        postService.getRandomExcludeUserId(userId = UserSessionUtils.getCurrentUserId())
+        postService.getRandom(userId = UserSessionUtils.getCurrentUserId())
             .map { PostDto(it) }
 
     private fun PostCreateRequest.toParameter(userId: String) = PostCreateParameter(
