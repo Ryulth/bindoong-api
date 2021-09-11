@@ -93,13 +93,15 @@ class PostController(
 
     private fun PostCreateRequest.toParameter(userId: String) = PostCreateParameter(
         userId = userId,
-        imageUrl = imageUrl
+        imageUrl = imageUrl,
+        content = content
     )
 
     private fun PostUpdateRequest.toParameter(userId: String, postId: String) = PostUpdateParameter(
         userId = userId,
         postId = postId,
-        imageUrl = imageUrl
+        imageUrl = imageUrl,
+        content = content
     )
     fun <T : Any> test(t: T): KClass<out T> = t::class
     companion object : KLogging()

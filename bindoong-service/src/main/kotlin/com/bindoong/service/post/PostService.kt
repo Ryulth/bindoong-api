@@ -46,23 +46,27 @@ class PostService(
 
     private fun PostCreateParameter.toParameter() = CreateParameter(
         userId = userId,
-        imageUrl = imageUrl
+        imageUrl = imageUrl,
+        content = content
     )
 
     private fun PostUpdateParameter.toParameter() = UpdateParameter(
         userId = userId,
         postId = postId,
-        imageUrl = imageUrl
+        imageUrl = imageUrl,
+        content = content
     )
 }
 
 data class PostCreateParameter(
     val userId: String,
-    val imageUrl: String
+    val imageUrl: String,
+    val content: String?
 )
 
 data class PostUpdateParameter(
     val userId: String,
     val postId: String,
-    val imageUrl: String
+    val imageUrl: String,
+    val content: String?
 )

@@ -7,6 +7,7 @@ data class PostDto(
     val postId: String,
     val userId: String,
     val imageUrl: String,
+    val content: String?,
     val createDateTime: LocalDateTime
 ) {
     companion object {
@@ -15,7 +16,8 @@ data class PostDto(
             postId = post.postId,
             userId = post.userId,
             imageUrl = post.imageUrl,
-            createDateTime = post.createdDateTime
+            createDateTime = post.createdDateTime,
+            content = post.content
         )
     }
 }

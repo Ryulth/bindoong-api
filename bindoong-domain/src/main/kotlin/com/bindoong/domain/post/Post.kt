@@ -10,6 +10,7 @@ data class Post(
     val postId: String,
     val userId: String,
     val imageUrl: String,
+    val content: String?,
     @CreatedDate
     val createdDateTime: LocalDateTime = LocalDateTime.now(),
     @LastModifiedDate

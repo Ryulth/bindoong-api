@@ -81,6 +81,7 @@ class PostRepositoryImpl(
         postId = this.get(COLUMN_POST_ID, String::class.java)!!,
         userId = this.get(COLUMN_USER_ID, String::class.java)!!,
         imageUrl = this.get(COLUMN_IMAGE_URL, String::class.java)!!,
+        content = this.get(COLUMN_CONTENT, String::class.java),
         createdDateTime = this.get(COLUMN_CREATED_DATE_TIME, LocalDateTime::class.java)!!,
         updatedDateTime = this.get(COLUMN_UPDATED_DATE_TIME, LocalDateTime::class.java)!!,
     )
@@ -89,6 +90,7 @@ class PostRepositoryImpl(
         private const val COLUMN_POST_ID = "post_id"
         private const val COLUMN_USER_ID = "user_id"
         private const val COLUMN_IMAGE_URL = "image_url"
+        private const val COLUMN_CONTENT = "content"
         private const val COLUMN_CREATED_DATE_TIME = "created_date_time"
         private const val COLUMN_UPDATED_DATE_TIME = "updated_date_time"
     }
