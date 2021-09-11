@@ -26,20 +26,18 @@ class SecurityConfig(
     fun applicationSecurityWebFilterChain(
         http: ServerHttpSecurity,
     ): SecurityWebFilterChain {
-        http.authenticationManager(authenticationManager)
-            .addFilterBefore(
-                TokenAuthorizationFilter(authenticationManager, tokenProvider),
-                SecurityWebFiltersOrder.FORM_LOGIN
-            )
-
-        http.apply {
+        return http.apply {
             securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
             formLogin { it.disable() }
             logout { it.disable() }
             httpBasic { it.disable() }
             csrf { it.disable() }
-        }
-        return http.build()
+            authenticationManager(authenticationManager)
+            addFilterBefore(
+                TokenAuthorizationFilter(authenticationManager, tokenProvider),
+                SecurityWebFiltersOrder.FORM_LOGIN
+            )
+        }.build()
     }
 
     @Bean
