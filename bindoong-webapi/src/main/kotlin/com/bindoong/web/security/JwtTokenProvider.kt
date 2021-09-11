@@ -76,13 +76,17 @@ class JwtTokenProvider(
         try {
             return decode.invoke()
         } catch (e: TokenExpiredException) {
+            logger.error(e) { "token expired" }
             throw BadCredentialsException("token expired")
         } catch (e: JWTDecodeException) {
-            throw BadCredentialsException("error: jwt decode error")
+            logger.error(e) { "jwt decode error" }
+            throw BadCredentialsException("jwt decode error")
         } catch (e: JsonProcessingException) {
+            logger.error(e) { "error occurred while processing payload" }
             throw BadCredentialsException("error occurred while processing payload")
         } catch (e: Exception) {
-            throw BadCredentialsException("error: token is wrong")
+            logger.error(e) { "token is wrong" }
+            throw BadCredentialsException("token is wrong")
         }
     }
 

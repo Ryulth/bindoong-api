@@ -10,12 +10,12 @@ import java.util.function.Function
 
 class TokenAuthenticationConverter(
     private val tokenProvider: TokenProvider
-) : Function<ServerWebExchange?, Mono<Authentication>> {
+) : Function<ServerWebExchange, Mono<Authentication>> {
 
-    override fun apply(exchange: ServerWebExchange?): Mono<Authentication> =
+    override fun apply(exchange: ServerWebExchange): Mono<Authentication> =
         mono {
             var authentication: Authentication? = null
-            val headers = exchange?.request?.headers?.get(HttpHeaders.AUTHORIZATION)
+            val headers = exchange.request.headers[HttpHeaders.AUTHORIZATION]
             headers?.forEach { token ->
                 val tokenPrefix = tokenProvider.getTokenPrefix()
                 if (token.startsWith(tokenPrefix)) {

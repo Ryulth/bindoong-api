@@ -12,7 +12,7 @@ import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository
 import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.reactive.CorsWebFilter
+import org.springframework.web.cors.reactive.CorsConfigurationSource
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 
 @Configuration
@@ -29,7 +29,7 @@ class SecurityConfig(
         http.authenticationManager(authenticationManager)
             .addFilterBefore(
                 TokenAuthorizationFilter(authenticationManager, tokenProvider),
-                SecurityWebFiltersOrder.HTTP_BASIC
+                SecurityWebFiltersOrder.FORM_LOGIN
             )
 
         http.apply {
@@ -43,18 +43,15 @@ class SecurityConfig(
     }
 
     @Bean
-    fun corsFilter(): CorsWebFilter {
+    fun corsConfigurationSource(): CorsConfigurationSource {
         val config = CorsConfiguration().apply {
             allowCredentials = false
-            addAllowedOrigin("*")
-            addAllowedHeader("*")
-            addAllowedMethod("*")
+            allowedOrigins = listOf("*")
+            allowedMethods = listOf("*")
+            allowedHeaders = listOf("*")
         }
-
-        val source = UrlBasedCorsConfigurationSource().apply {
+        return UrlBasedCorsConfigurationSource().apply {
             registerCorsConfiguration("/**", config)
         }
-
-        return CorsWebFilter(source)
     }
 }
