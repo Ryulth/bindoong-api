@@ -4,6 +4,7 @@ dependencies {
 
     implementation(Libs.Spring.autoconfigure)
     implementation(Libs.Spring.webflux)
+    implementation(Libs.Spring.aop)
     implementation(Libs.Spring.r2dbc)
     implementation(Libs.Spring.r2dbcMysql)
     implementation(Libs.Spring.jdbcMysql)
@@ -13,4 +14,7 @@ dependencies {
     implementation(Libs.Aws.nettyNioClient)
     implementation(Libs.Apache.commonsIo)
     implementation(Libs.Generator.uuid)
+    implementation(Libs.Resilience4j.starter)
+    implementation(Libs.Resilience4j.reactor)
+    implementation(Libs.Resilience4j.kotlin)
 }

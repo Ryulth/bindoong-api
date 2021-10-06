@@ -8,7 +8,7 @@ import com.bindoong.domain.user.Role
 import com.bindoong.domain.user.User
 import com.bindoong.domain.user.UserCreateParameter
 import com.bindoong.domain.user.UserDomainService
-import com.bindoong.infrastructure.client.KakaoClient
+import com.bindoong.infrastructure.client.kakao.KakaoClient
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -20,7 +20,7 @@ class KakaoUserService(
 ) : AbstractUserService<KakaoRegisterParameter, KakaoLoginParameter>() {
     @Transactional
     override suspend fun validateRegister(registerParameter: KakaoRegisterParameter) {
-//        kakaoApiClient.getUserInfo(registerParameter.accessToken)
+        kakaoClient.getUserInfo(registerParameter.accessToken)
         // TODO 인증
     }
 
@@ -44,7 +44,7 @@ class KakaoUserService(
 
     @Transactional
     override suspend fun validateLogin(loginParameter: KakaoLoginParameter) {
-//        kakaoApiClient.getUserInfo(loginParameter.accessToken)
+        kakaoClient.getUserInfo(loginParameter.accessToken)
         // TODO 인증
     }
 

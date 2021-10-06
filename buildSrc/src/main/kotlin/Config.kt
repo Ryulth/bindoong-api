@@ -45,6 +45,7 @@ object Libs {
         const val autoconfigure = "org.springframework.boot:spring-boot-autoconfigure"
         const val webflux = "org.springframework.boot:spring-boot-starter-webflux"
         const val actuator = "org.springframework.boot:spring-boot-starter-actuator"
+        const val aop = "org.springframework.boot:spring-boot-starter-aop"
         const val security = "org.springframework.boot:spring-boot-starter-security"
         const val r2dbc = "org.springframework.boot:spring-boot-starter-data-r2dbc"
         const val r2dbcMysql = "dev.miku:r2dbc-mysql:${Versions.r2dbcMysql}"
@@ -82,9 +83,6 @@ object Libs {
 
     object SpringFox {
         const val starter = "io.springfox:springfox-boot-starter:3.0.0"
-        const val swagger2 = "io.springfox:springfox-swagger2:2.10.5"
-        const val ui = "io.springfox:springfox-swagger-ui:2.10.5"
-        const val webflux = "io.springfox:springfox-spring-webflux:2.10.5"
     }
 
     object Flyway {
@@ -95,5 +93,11 @@ object Libs {
         const val sts = "software.amazon.awssdk:sts:${Versions.aws}"
         const val s3 = "software.amazon.awssdk:s3:${Versions.aws}"
         const val nettyNioClient = "software.amazon.awssdk:netty-nio-client:${Versions.aws}"
+    }
+
+    object Resilience4j {
+        const val starter = "io.github.resilience4j:resilience4j-spring-boot2:1.7.1"
+        const val reactor = "io.github.resilience4j:resilience4j-reactor:1.7.1"
+        const val kotlin = "io.github.resilience4j:resilience4j-kotlin:1.7.1"
     }
 }
