@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import kotlin.reflect.KClass
 
 @Tag(name = SwaggerConfig.ApiTag.POST)
 @RestController
@@ -94,15 +93,17 @@ class PostController(
     private fun PostCreateRequest.toParameter(userId: String) = PostCreateParameter(
         userId = userId,
         imageUrl = imageUrl,
-        content = content
+        content = content,
+        locationId = locationId
     )
 
     private fun PostUpdateRequest.toParameter(userId: String, postId: String) = PostUpdateParameter(
         userId = userId,
         postId = postId,
         imageUrl = imageUrl,
-        content = content
+        content = content,
+        locationId = locationId
     )
-    fun <T : Any> test(t: T): KClass<out T> = t::class
+
     companion object : KLogging()
 }

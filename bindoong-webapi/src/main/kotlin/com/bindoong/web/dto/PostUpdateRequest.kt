@@ -2,5 +2,6 @@ package com.bindoong.web.dto
 
 data class PostUpdateRequest(
     val imageUrl: String,
-    val content: String?
+    val content: String?,
+    val locationId: String?
 )

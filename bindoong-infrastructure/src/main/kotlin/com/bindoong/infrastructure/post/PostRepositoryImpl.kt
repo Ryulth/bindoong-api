@@ -84,6 +84,7 @@ class PostRepositoryImpl(
         content = this.get(COLUMN_CONTENT, String::class.java),
         createdDateTime = this.get(COLUMN_CREATED_DATE_TIME, LocalDateTime::class.java)!!,
         updatedDateTime = this.get(COLUMN_UPDATED_DATE_TIME, LocalDateTime::class.java)!!,
+        locationId = this.get(COLUMN_LOCATION_ID, String::class.java)
     )
 
     companion object {
@@ -91,6 +92,7 @@ class PostRepositoryImpl(
         private const val COLUMN_USER_ID = "user_id"
         private const val COLUMN_IMAGE_URL = "image_url"
         private const val COLUMN_CONTENT = "content"
+        private const val COLUMN_LOCATION_ID = "location_id"
         private const val COLUMN_CREATED_DATE_TIME = "created_date_time"
         private const val COLUMN_UPDATED_DATE_TIME = "updated_date_time"
     }

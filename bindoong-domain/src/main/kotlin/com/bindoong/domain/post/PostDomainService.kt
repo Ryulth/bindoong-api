@@ -18,7 +18,8 @@ class PostDomainService(
                 postId = UlidCreator.getUlid().toString(),
                 userId = parameter.userId,
                 imageUrl = parameter.imageUrl,
-                content = parameter.content
+                content = parameter.content,
+                locationId = parameter.locationId
             )
         )
 
@@ -29,7 +30,8 @@ class PostDomainService(
                 postId = parameter.postId,
                 userId = parameter.userId,
                 imageUrl = parameter.imageUrl,
-                content = parameter.content
+                content = parameter.content,
+                locationId = parameter.locationId
             )
         )
 
@@ -65,12 +67,14 @@ class PostDomainService(
 data class CreateParameter(
     val userId: String,
     val imageUrl: String,
-    val content: String?
+    val content: String?,
+    val locationId: String?
 )
 
 data class UpdateParameter(
     val userId: String,
     val postId: String,
     val imageUrl: String,
-    val content: String?
+    val content: String?,
+    val locationId: String?
 )
