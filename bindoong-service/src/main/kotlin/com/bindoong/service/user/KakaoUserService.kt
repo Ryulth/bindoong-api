@@ -20,7 +20,7 @@ class KakaoUserService(
 ) : AbstractUserService<KakaoRegisterParameter, KakaoLoginParameter>() {
     @Transactional
     override suspend fun validateRegister(registerParameter: KakaoRegisterParameter) {
-//        kakaoClient.getUserInfo(registerParameter.accessToken)
+        kakaoClient.getUserInfo(registerParameter.accessToken)
         // TODO 인증
     }
 
@@ -44,7 +44,7 @@ class KakaoUserService(
 
     @Transactional
     override suspend fun validateLogin(loginParameter: KakaoLoginParameter) {
-//        kakaoClient.getUserInfo(loginParameter.accessToken)
+        kakaoClient.getUserInfo(loginParameter.accessToken)
         // TODO 인증
     }
 

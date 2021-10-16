@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class KakaoClient(
-    private val kakaoApiClient: KakaoAsyncClient
+    private val kakaoAsyncClient: KakaoAsyncClient
 ) {
     suspend fun getUserInfo(accessToken: String) {
-        kakaoApiClient.getUserInfo(accessToken).awaitSingleOrNull()
+        kakaoAsyncClient.getUserInfo(accessToken).awaitSingleOrNull()
     }
 }
