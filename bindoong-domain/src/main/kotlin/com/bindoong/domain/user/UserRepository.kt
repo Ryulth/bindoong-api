@@ -9,4 +9,5 @@ interface UserRepository {
     suspend fun findById(userId: String): User?
     suspend fun deleteById(userId: String)
     suspend fun existsById(userId: String): Boolean
+    suspend fun existsByNickname(nickname: String): Boolean
 }

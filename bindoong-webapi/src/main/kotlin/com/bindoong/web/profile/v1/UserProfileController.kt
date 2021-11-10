@@ -43,5 +43,19 @@ class UserProfileController(
         userProfileService.getUserProfile(userId)
             .let { UserProfileDto(it) }
 
+    @ApiOperation(
+        nickname = "validateUserNickname",
+        value = "유저 프로필",
+        response = UserProfileDto::class,
+        tags = [SwaggerConfig.ApiTag.PROFILE]
+    )
+    @PreAuthorize("hasRole('BASIC')")
+    @GetMapping("/v1/users/nickname/validate")
+    suspend fun validateUserNickname(
+        @PathVariable userId: String
+    ): UserProfileDto =
+        userProfileService.getUserProfile(userId)
+            .let { UserProfileDto(it) }
+
     companion object : KLogging()
 }

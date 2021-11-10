@@ -1,5 +1,6 @@
 package com.bindoong.web.error
 
+import com.bindoong.core.exceptions.NicknameDuplicatedException
 import com.bindoong.core.exceptions.UserAlreadyExistException
 import com.bindoong.core.exceptions.UserNotAllowedException
 import com.bindoong.core.exceptions.UserNotFoundException
@@ -43,6 +44,8 @@ class ErrorHandler : WebExceptionHandler {
             Pair(ErrorResponse.ERROR_CODE_ACCOUNT_DUPLICATED, HttpStatus.BAD_REQUEST)
         is UserNotAllowedException ->
             Pair(ErrorResponse.ERROR_CODE_ACCOUNT_NOT_ALLOWED, HttpStatus.FORBIDDEN)
+        is NicknameDuplicatedException ->
+            Pair(ErrorResponse.ERROR_CODE_USER_NICKNAME_DUPLICATED, HttpStatus.BAD_REQUEST)
         is WebClientResponseException ->
             when (exception.statusCode) {
                 HttpStatus.UNAUTHORIZED ->

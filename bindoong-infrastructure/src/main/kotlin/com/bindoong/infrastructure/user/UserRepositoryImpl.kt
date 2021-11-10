@@ -26,6 +26,11 @@ class UserRepositoryImpl(
             ?: false
 
     @Transactional
+    override suspend fun existsByNickname(nickname: String): Boolean =
+        template.exists(Query.query(where(COLUMN_NICKNAME).`is`(nickname)), User::class.java).awaitSingleOrNull()
+            ?: false
+
+    @Transactional
     override suspend fun findById(userId: String): User? =
         template.selectOne(Query.query(where(COLUMN_USER_ID).`is`(userId)), User::class.java).awaitSingleOrNull()
 
@@ -36,5 +41,6 @@ class UserRepositoryImpl(
 
     companion object {
         private const val COLUMN_USER_ID = "user_id"
+        private const val COLUMN_NICKNAME = "nickname"
     }
 }

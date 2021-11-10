@@ -10,4 +10,7 @@ class UserProfileDomainService(
 ) {
     @Transactional(readOnly = true)
     suspend fun get(userId: String): UserProfile? = userRepository.findById(userId)?.let { UserProfile(it) }
+
+    @Transactional(readOnly = true)
+    suspend fun duplicatedNickname(nickname: String): Boolean = userRepository.existsByNickname(nickname)
 }
