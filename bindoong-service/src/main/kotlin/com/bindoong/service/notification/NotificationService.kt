@@ -6,9 +6,7 @@ import com.bindoong.domain.CursorRequest
 import com.bindoong.domain.notification.CreateParameter
 import com.bindoong.domain.notification.Notification
 import com.bindoong.domain.notification.NotificationDomainService
-import com.bindoong.domain.notification.NotificationType
 import com.bindoong.domain.notification.UpdateParameter
-import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -38,7 +36,6 @@ class NotificationService(
             )
         } ?: throw UserNotAllowedException("Not my notification")
 
-
     @Transactional
     suspend fun ack(userId: String, notificationId: String): Notification =
         getOrThrow(notificationId).takeIf { it.receiverUserId == userId }?.let {
@@ -52,7 +49,6 @@ class NotificationService(
                 )
             )
         } ?: throw UserNotAllowedException("Not my notification")
-
 
     @Transactional
     suspend fun delete(notificationId: String) = notificationDomainService.delete(notificationId)
