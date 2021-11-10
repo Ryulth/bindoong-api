@@ -14,9 +14,8 @@ class UserProfileService(
         userProfileDomainService.get(userId) ?: throw UserNotFoundException()
 
     suspend fun validateNickname(nickname: String) {
-        if (userProfileDomainService.duplicatedNickname(nickname).not()) {
-            throw NicknameDuplicatedException("$nickname duplicated")
+        if (userProfileDomainService.duplicatedNickname(nickname)) {
+            throw NicknameDuplicatedException("Nickname duplicated")
         }
     }
-
 }

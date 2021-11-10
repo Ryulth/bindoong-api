@@ -2,6 +2,7 @@ package com.bindoong.web.profile.v1
 
 import com.bindoong.service.profile.UserProfileService
 import com.bindoong.web.config.SwaggerConfig
+import com.bindoong.web.dto.NicknameRequest
 import com.bindoong.web.dto.UserProfileDto
 import com.bindoong.web.security.UserSessionUtils
 import io.swagger.annotations.ApiOperation
@@ -10,6 +11,8 @@ import mu.KLogging
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @Tag(name = SwaggerConfig.ApiTag.PROFILE)
@@ -45,17 +48,16 @@ class UserProfileController(
 
     @ApiOperation(
         nickname = "validateUserNickname",
-        value = "유저 프로필",
-        response = UserProfileDto::class,
+        value = "유저 닉네임 검증",
         tags = [SwaggerConfig.ApiTag.PROFILE]
     )
     @PreAuthorize("hasRole('BASIC')")
-    @GetMapping("/v1/users/nickname/validate")
+    @PostMapping("/v1/users/nickname/validate")
     suspend fun validateUserNickname(
-        @PathVariable userId: String
-    ): UserProfileDto =
-        userProfileService.getUserProfile(userId)
-            .let { UserProfileDto(it) }
+        @RequestBody nicknameRequest: NicknameRequest
+    ) {
+        userProfileService.validateNickname(nicknameRequest.nickname)
+    }
 
     companion object : KLogging()
 }
