@@ -2,6 +2,8 @@ CREATE TABLE `post` (
     `post_id`               VARCHAR(50)     NOT NULL,
     `user_id`               VARCHAR(50)     NOT NULL,
     `image_url`             VARCHAR(512)    NOT NULL,
+    `content`               TEXT            DEFAULT NULL,
+    `location_id`           VARCHAR(50)     DEFAULT NULL,
     `created_date_time`     DATETIME        NOT NULL,
     `updated_date_time`     DATETIME        NOT NULL,
     PRIMARY KEY (`post_id`),

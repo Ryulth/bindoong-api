@@ -16,7 +16,7 @@ class FlywayConfig(
     @Value("\${spring.flyway.password}")
     private val password: String,
 ) {
-    @Bean
+    @Bean(initMethod = "migrate")
     fun flyway(): Flyway {
         return Flyway(
             Flyway.configure()

@@ -5,7 +5,8 @@ CREATE TABLE `user` (
     `roles`                 VARCHAR(100)    NOT NULL,
     `created_date_time`     DATETIME        NOT NULL,
     `updated_date_time`     DATETIME        NOT NULL,
-    PRIMARY KEY (`user_id`)
+    PRIMARY KEY (`user_id`),
+    UNIQUE KEY `UK_nickname` (`nickname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `facebook_user` (
