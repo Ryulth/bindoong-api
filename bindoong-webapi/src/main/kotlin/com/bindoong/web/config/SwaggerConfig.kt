@@ -70,6 +70,7 @@ class SwaggerConfig {
             const val POST = "Post"
             const val PROFILE = "Profile"
             const val LOCATION = "Location"
+            const val NOTIFICATION = "Notification"
         }
     }
 

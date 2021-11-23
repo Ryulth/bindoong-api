@@ -51,7 +51,6 @@ class UserProfileController(
         value = "유저 닉네임 검증",
         tags = [SwaggerConfig.ApiTag.PROFILE]
     )
-    @PreAuthorize("hasRole('BASIC')")
     @PostMapping("/v1/users/nickname/validate")
     suspend fun validateUserNickname(
         @RequestBody nicknameRequest: NicknameRequest
