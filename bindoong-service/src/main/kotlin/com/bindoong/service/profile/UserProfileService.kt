@@ -13,6 +13,10 @@ class UserProfileService(
     suspend fun getUserProfile(userId: String): UserProfile =
         userProfileDomainService.get(userId) ?: throw UserNotFoundException()
 
+    suspend fun uploadProfileImage(userId: String, imageUrl: String, thumbnailImageUrl: String) {
+        userProfileDomainService.saveImage(userId, imageUrl, thumbnailImageUrl)
+    }
+
     suspend fun validateNickname(nickname: String) {
         if (userProfileDomainService.duplicatedNickname(nickname)) {
             throw NicknameDuplicatedException("Nickname duplicated")
